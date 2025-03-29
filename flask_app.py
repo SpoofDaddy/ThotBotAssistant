@@ -5,6 +5,7 @@ import psutil
 import json
 import logging
 from simp_tracker import SimpTracker
+from memory_system import memory_system
 from responses import PERSONALITY_TYPES, DEFAULT_PERSONALITY
 from dotenv import load_dotenv
 
@@ -52,19 +53,24 @@ def index():
             'icon': '👋'
         },
         {
-            'name': 'Roleplay Commands',
-            'description': '!kiss, !hug, !pat, and more interactions with custom replies',
-            'icon': '💏'
-        },
-        {
-            'name': 'Memory System',
-            'description': 'Cherry will remember past interactions with users',
-            'icon': '🧠'
-        },
-        {
             'name': 'User Nicknames',
             'description': 'Cherry gives flirty pet names to repeat users',
             'icon': '📝'
+        },
+        {
+            'name': 'Server Stats',
+            'description': 'Dashboard showing server activity statistics',
+            'icon': '📊'
+        },
+        {
+            'name': 'Theme Switcher',
+            'description': 'Switch between light and dark mode for the dashboard',
+            'icon': '🌓'
+        },
+        {
+            'name': 'Memory Stats',
+            'description': 'View memory statistics and user interaction history',
+            'icon': '🧠'
         }
     ]
     
@@ -168,7 +174,7 @@ def api_personality():
 @app.route('/api/commands')
 def api_commands():
     """API endpoint to get all available commands"""
-    commands = [
+    basic_commands = [
         {
             'name': '!flirt',
             'description': 'Cherry will send you a flirty message 💋',
@@ -178,7 +184,28 @@ def api_commands():
             'name': '!compliment',
             'description': 'Cherry will compliment you or someone you mention 💖',
             'usage': '!compliment [@user]'
+        }
+    ]
+    
+    roleplay_commands = [
+        {
+            'name': '!hug',
+            'description': 'Cherry will give you or someone you mention a hug 🤗',
+            'usage': '!hug [@user]'
         },
+        {
+            'name': '!kiss',
+            'description': 'Cherry will kiss you or someone you mention 😘',
+            'usage': '!kiss [@user]'
+        },
+        {
+            'name': '!pat',
+            'description': 'Cherry will pat you or someone you mention 👐',
+            'usage': '!pat [@user]'
+        }
+    ]
+    
+    utility_commands = [
         {
             'name': '!simp',
             'description': 'Check how much you or someone else has been simping for Cherry 😘',
@@ -191,9 +218,35 @@ def api_commands():
         }
     ]
     
+    # Combine all command categories
+    commands = basic_commands + roleplay_commands + utility_commands
+    
     return jsonify({
         'commands': commands
     })
+
+@app.route('/api/memory')
+def api_memory():
+    """API endpoint to get memory system statistics"""
+    # Get total memory count
+    try:
+        # Memory stats aren't tied to individual users on the dashboard yet
+        # Just get overall system stats for now
+        memory_stats = {
+            'enabled': os.environ.get("ENABLE_MEMORY", "True").lower() in ["true", "1", "yes"],
+            'total_memories': 0  # Placeholder - we'll add actual stats in future
+        }
+        
+        return jsonify({
+            'success': True,
+            'stats': memory_stats
+        })
+    except Exception as e:
+        logger.error(f"Error getting memory stats: {e}")
+        return jsonify({
+            'success': False,
+            'message': f"Error retrieving memory statistics: {str(e)}"
+        }), 500
 
 @app.route('/api/coming_soon')
 def api_coming_soon():
@@ -205,19 +258,39 @@ def api_coming_soon():
             'icon': '👋'
         },
         {
-            'name': 'Roleplay Commands',
-            'description': '!kiss, !hug, !pat, and more interactions with custom replies',
-            'icon': '💏'
-        },
-        {
-            'name': 'Memory System',
-            'description': 'Cherry will remember past interactions with users',
-            'icon': '🧠'
-        },
-        {
             'name': 'User Nicknames',
             'description': 'Cherry gives flirty pet names to repeat users',
             'icon': '📝'
+        },
+        {
+            'name': 'Server Stats',
+            'description': 'Dashboard showing server activity statistics',
+            'icon': '📊'
+        },
+        {
+            'name': 'Theme Switcher',
+            'description': 'Switch between light and dark mode for the dashboard',
+            'icon': '🌓'
+        },
+        {
+            'name': 'Memory Stats',
+            'description': 'View memory statistics and user interaction history',
+            'icon': '🧠'
+        },
+        {
+            'name': 'Mobile Improvements',
+            'description': 'Better mobile experience for the dashboard',
+            'icon': '📱'
+        },
+        {
+            'name': 'Event Calendar',
+            'description': 'Schedule and manage server events',
+            'icon': '📅'
+        },
+        {
+            'name': 'API Documentation',
+            'description': 'Documentation for the bot\'s API endpoints',
+            'icon': '📚'
         }
     ]
     

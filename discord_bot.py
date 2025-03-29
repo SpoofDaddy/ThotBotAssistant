@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 from config import PREFIX, COLORS, STATUS_MESSAGES, CURRENT_PERSONALITY, ENABLE_MEMORY, ENABLE_USER_RECOGNITION
 from responses import PERSONALITY_RESPONSES, PERSONALITY_TYPES
 from simp_tracker import SimpTracker
+from memory_system import memory_system
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, 
@@ -74,6 +75,11 @@ async def flirt(ctx):
     # Track the user's flirt interaction
     simp_tracker.increment_score(str(ctx.author.id))
     
+    # Record this interaction in Cherry's memory if enabled
+    if ENABLE_MEMORY:
+        memory_system.record_command(str(ctx.author.id), "flirt")
+        memory_system.record_interaction(str(ctx.author.id), "flirt")
+    
     # Get response based on current personality
     personality = CURRENT_PERSONALITY
     if personality not in PERSONALITY_RESPONSES:
@@ -81,6 +87,12 @@ async def flirt(ctx):
     
     flirt_response = random.choice(PERSONALITY_RESPONSES[personality]["flirt"])
     personality_color = PERSONALITY_TYPES[personality]["color"]
+    
+    # If memory is enabled, maybe include a memory reference (30% chance)
+    if ENABLE_MEMORY and random.random() < 0.3:
+        memory_reference = memory_system.generate_memory_reference(str(ctx.author.id), personality)
+        if memory_reference:
+            flirt_response = f"{memory_reference}\n\n{flirt_response}"
     
     # Convert hex color to RGB tuple
     color_hex = personality_color.lstrip('#')
@@ -122,6 +134,13 @@ async def compliment(ctx, user: discord.Member = None):
     if target_user.id == ctx.author.id:
         simp_tracker.increment_score(str(ctx.author.id))
     
+    # Record this interaction in Cherry's memory if enabled
+    if ENABLE_MEMORY:
+        memory_system.record_command(str(ctx.author.id), "compliment", 
+                                   {"target_id": str(target_user.id)} if user else None)
+        memory_system.record_interaction(str(ctx.author.id), "compliment", 
+                                       str(target_user.id) if user else None)
+    
     # Get response based on current personality
     personality = CURRENT_PERSONALITY
     if personality not in PERSONALITY_RESPONSES:
@@ -129,6 +148,12 @@ async def compliment(ctx, user: discord.Member = None):
     
     compliment = random.choice(PERSONALITY_RESPONSES[personality]["compliment"])
     personality_color = PERSONALITY_TYPES[personality]["color"]
+    
+    # If memory is enabled and targeting self, maybe include a memory reference (20% chance)
+    if ENABLE_MEMORY and target_user.id == ctx.author.id and random.random() < 0.2:
+        memory_reference = memory_system.generate_memory_reference(str(ctx.author.id), personality)
+        if memory_reference:
+            compliment = f"{memory_reference}\n\n{compliment}"
     
     # Convert hex color to RGB tuple
     color_hex = personality_color.lstrip('#')
@@ -166,6 +191,11 @@ async def simp_score(ctx, user: discord.Member = None):
     target_user = user if user else ctx.author
     user_id = str(target_user.id)
     
+    # Record this command in Cherry's memory if enabled
+    if ENABLE_MEMORY:
+        memory_system.record_command(str(ctx.author.id), "simp", 
+                                   {"target_id": str(target_user.id)} if user else None)
+    
     score = simp_tracker.get_score(user_id)
     
     # Determine the title based on the score
@@ -197,10 +227,195 @@ async def simp_score(ctx, user: discord.Member = None):
     
     await ctx.send(embed=embed)
 
+# Roleplay commands
+@bot.command(name="hug")
+async def hug(ctx, user: discord.Member = None):
+    """Cherry hugs the mentioned user or the command user if no one is mentioned."""
+    await simulate_typing(ctx)
+    
+    # If no user is mentioned, hug the command user
+    target_user = user if user else ctx.author
+    
+    # Track the interaction if self-requested
+    if target_user.id == ctx.author.id:
+        simp_tracker.increment_score(str(ctx.author.id))
+    
+    # Record this interaction in Cherry's memory if enabled
+    if ENABLE_MEMORY:
+        memory_system.record_command(str(ctx.author.id), "hug", 
+                                   {"target_id": str(target_user.id)} if user else None)
+        memory_system.record_interaction(str(ctx.author.id), "hug", 
+                                       str(target_user.id) if user else None)
+    
+    # Get response based on current personality
+    personality = CURRENT_PERSONALITY
+    if personality not in PERSONALITY_RESPONSES:
+        personality = "flirty"  # Default fallback
+    
+    hug_response = random.choice(PERSONALITY_RESPONSES[personality]["hug"])
+    personality_color = PERSONALITY_TYPES[personality]["color"]
+    
+    # If memory is enabled and this is a self-hug, maybe include a memory reference (15% chance)
+    if ENABLE_MEMORY and target_user.id == ctx.author.id and random.random() < 0.15:
+        memory_reference = memory_system.generate_memory_reference(str(ctx.author.id), personality)
+        if memory_reference:
+            hug_response = f"{memory_reference}\n\n{hug_response}"
+    
+    # Convert hex color to RGB tuple
+    color_hex = personality_color.lstrip('#')
+    color_rgb = tuple(int(color_hex[i:i+2], 16) for i in (0, 2, 4))
+    
+    embed = discord.Embed(
+        description=f"{target_user.mention}, {hug_response}",
+        color=discord.Color.from_rgb(*color_rgb if len(color_rgb) == 3 else COLORS['pink'])
+    )
+    
+    # Add personality indicator to the author name
+    personality_emoji = "🍒"
+    if personality == "tsundere":
+        personality_emoji = "😤"
+    elif personality == "wholesome":
+        personality_emoji = "💖"
+    elif personality == "spicy":
+        personality_emoji = "🔥"
+    elif personality == "gamer":
+        personality_emoji = "🎮"
+    
+    embed.set_author(
+        name=f"Cherry {personality_emoji} [{PERSONALITY_TYPES[personality]['name']}]", 
+        icon_url=bot.user.avatar.url if bot.user.avatar else None
+    )
+    
+    await ctx.send(embed=embed)
+
+@bot.command(name="kiss")
+async def kiss(ctx, user: discord.Member = None):
+    """Cherry kisses the mentioned user or the command user if no one is mentioned."""
+    await simulate_typing(ctx)
+    
+    # If no user is mentioned, kiss the command user
+    target_user = user if user else ctx.author
+    
+    # Track the interaction if self-requested
+    if target_user.id == ctx.author.id:
+        simp_tracker.increment_score(str(ctx.author.id))
+    
+    # Record this interaction in Cherry's memory if enabled
+    if ENABLE_MEMORY:
+        memory_system.record_command(str(ctx.author.id), "kiss", 
+                                   {"target_id": str(target_user.id)} if user else None)
+        memory_system.record_interaction(str(ctx.author.id), "kiss", 
+                                       str(target_user.id) if user else None)
+    
+    # Get response based on current personality
+    personality = CURRENT_PERSONALITY
+    if personality not in PERSONALITY_RESPONSES:
+        personality = "flirty"  # Default fallback
+    
+    kiss_response = random.choice(PERSONALITY_RESPONSES[personality]["kiss"])
+    personality_color = PERSONALITY_TYPES[personality]["color"]
+    
+    # If memory is enabled and this is a self-kiss, maybe include a memory reference (20% chance)
+    if ENABLE_MEMORY and target_user.id == ctx.author.id and random.random() < 0.2:
+        memory_reference = memory_system.generate_memory_reference(str(ctx.author.id), personality)
+        if memory_reference:
+            kiss_response = f"{memory_reference}\n\n{kiss_response}"
+    
+    # Convert hex color to RGB tuple
+    color_hex = personality_color.lstrip('#')
+    color_rgb = tuple(int(color_hex[i:i+2], 16) for i in (0, 2, 4))
+    
+    embed = discord.Embed(
+        description=f"{target_user.mention}, {kiss_response}",
+        color=discord.Color.from_rgb(*color_rgb if len(color_rgb) == 3 else COLORS['purple'])
+    )
+    
+    # Add personality indicator to the author name
+    personality_emoji = "🍒"
+    if personality == "tsundere":
+        personality_emoji = "😤"
+    elif personality == "wholesome":
+        personality_emoji = "💖"
+    elif personality == "spicy":
+        personality_emoji = "🔥"
+    elif personality == "gamer":
+        personality_emoji = "🎮"
+    
+    embed.set_author(
+        name=f"Cherry {personality_emoji} [{PERSONALITY_TYPES[personality]['name']}]", 
+        icon_url=bot.user.avatar.url if bot.user.avatar else None
+    )
+    
+    await ctx.send(embed=embed)
+
+@bot.command(name="pat")
+async def pat(ctx, user: discord.Member = None):
+    """Cherry pats the mentioned user or the command user if no one is mentioned."""
+    await simulate_typing(ctx)
+    
+    # If no user is mentioned, pat the command user
+    target_user = user if user else ctx.author
+    
+    # Track the interaction if self-requested
+    if target_user.id == ctx.author.id:
+        simp_tracker.increment_score(str(ctx.author.id))
+    
+    # Record this interaction in Cherry's memory if enabled
+    if ENABLE_MEMORY:
+        memory_system.record_command(str(ctx.author.id), "pat", 
+                                   {"target_id": str(target_user.id)} if user else None)
+        memory_system.record_interaction(str(ctx.author.id), "pat", 
+                                       str(target_user.id) if user else None)
+    
+    # Get response based on current personality
+    personality = CURRENT_PERSONALITY
+    if personality not in PERSONALITY_RESPONSES:
+        personality = "flirty"  # Default fallback
+    
+    pat_response = random.choice(PERSONALITY_RESPONSES[personality]["pat"])
+    personality_color = PERSONALITY_TYPES[personality]["color"]
+    
+    # If memory is enabled and this is a self-pat, maybe include a memory reference (10% chance)
+    if ENABLE_MEMORY and target_user.id == ctx.author.id and random.random() < 0.1:
+        memory_reference = memory_system.generate_memory_reference(str(ctx.author.id), personality)
+        if memory_reference:
+            pat_response = f"{memory_reference}\n\n{pat_response}"
+    
+    # Convert hex color to RGB tuple
+    color_hex = personality_color.lstrip('#')
+    color_rgb = tuple(int(color_hex[i:i+2], 16) for i in (0, 2, 4))
+    
+    embed = discord.Embed(
+        description=f"{target_user.mention}, {pat_response}",
+        color=discord.Color.from_rgb(*color_rgb if len(color_rgb) == 3 else COLORS['blue'])
+    )
+    
+    # Add personality indicator to the author name
+    personality_emoji = "🍒"
+    if personality == "tsundere":
+        personality_emoji = "😤"
+    elif personality == "wholesome":
+        personality_emoji = "💖"
+    elif personality == "spicy":
+        personality_emoji = "🔥"
+    elif personality == "gamer":
+        personality_emoji = "🎮"
+    
+    embed.set_author(
+        name=f"Cherry {personality_emoji} [{PERSONALITY_TYPES[personality]['name']}]", 
+        icon_url=bot.user.avatar.url if bot.user.avatar else None
+    )
+    
+    await ctx.send(embed=embed)
+
 @bot.command(name="helpme")
 async def help_command(ctx):
     """Displays all available commands."""
     await simulate_typing(ctx, min_time=0.5, max_time=1.5)
+    
+    # Record this command in Cherry's memory if enabled
+    if ENABLE_MEMORY:
+        memory_system.record_command(str(ctx.author.id), "helpme")
     
     # Get color based on current personality
     personality = CURRENT_PERSONALITY
@@ -249,6 +464,9 @@ async def help_command(ctx):
     commands = [
         (f"{PREFIX}flirt", "I'll send you a flirty message 💋"),
         (f"{PREFIX}compliment [@user]", "I'll compliment you or someone you mention 💖"),
+        (f"{PREFIX}hug [@user]", "I'll give you or someone you mention a hug 🤗"),
+        (f"{PREFIX}kiss [@user]", "I'll kiss you or someone you mention 😘"),
+        (f"{PREFIX}pat [@user]", "I'll pat you or someone you mention 👐"),
         (f"{PREFIX}simp [@user]", "Check how much you or someone else has been simping for me 😘"),
         (f"{PREFIX}helpme", "Shows this help message 💌")
     ]
@@ -260,8 +478,58 @@ async def help_command(ctx):
         inline=False
     )
     
-    for cmd, desc in commands:
-        embed.add_field(name=cmd, value=desc, inline=False)
+    # Categorize commands
+    interaction_commands = [(f"{PREFIX}flirt", "I'll send you a flirty message 💋"),
+                           (f"{PREFIX}compliment [@user]", "I'll compliment you or someone you mention 💖")]
+    
+    roleplay_commands = [(f"{PREFIX}hug [@user]", "I'll give you or someone you mention a hug 🤗"),
+                        (f"{PREFIX}kiss [@user]", "I'll kiss you or someone you mention 😘"),
+                        (f"{PREFIX}pat [@user]", "I'll pat you or someone you mention 👐")]
+    
+    utility_commands = [(f"{PREFIX}simp [@user]", "Check how much you or someone else has been simping for me 😘"),
+                       (f"{PREFIX}helpme", "Shows this help message 💌")]
+    
+    # Add fields for categorized commands
+    embed.add_field(
+        name="💬 Basic Commands",
+        value="\n".join([f"**{cmd}** - {desc}" for cmd, desc in interaction_commands]), 
+        inline=False
+    )
+    
+    embed.add_field(
+        name="💕 Roleplay Commands",
+        value="\n".join([f"**{cmd}** - {desc}" for cmd, desc in roleplay_commands]), 
+        inline=False
+    )
+    
+    embed.add_field(
+        name="🔧 Utility Commands",
+        value="\n".join([f"**{cmd}** - {desc}" for cmd, desc in utility_commands]), 
+        inline=False
+    )
+    
+    # Add memory system info if enabled
+    if ENABLE_MEMORY:
+        memory_info = "I remember our interactions! Sometimes I might recall things we've done together. 💭"
+        
+        if personality == "tsundere":
+            memory_info = "I-it's not like I'm keeping track of our interactions or anything... but I might remember stuff we did."
+        elif personality == "wholesome":
+            memory_info = "I treasure the memories of our time together and may recall our lovely moments! 💕"
+        elif personality == "spicy":
+            memory_info = "I never forget the... interesting things we've done together. I might bring them up when you least expect it~ 😏"
+        elif personality == "gamer":
+            memory_info = "Achievement unlocked: Memory System! I'm saving our gameplay highlights for future reference!"
+        
+        user_memory_count = memory_system.get_memory_count(str(ctx.author.id))
+        if user_memory_count > 0:
+            memory_info += f"\n\nI have **{user_memory_count}** memories of us together so far!"
+        
+        embed.add_field(
+            name="🧠 Memory System",
+            value=memory_info,
+            inline=False
+        )
     
     # Customize footer based on personality
     footer_text = "More commands coming soon... Stay tuned! 💕"

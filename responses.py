@@ -278,26 +278,240 @@ GAMER_COMPLIMENT_RESPONSES = [
 ]
 
 # Dictionary of responses by personality type
+# Roleplay responses for different personalities
+# Hug responses
+FLIRTY_HUG_RESPONSES = [
+    "Mmm, I could hug you all day long~ 💕",
+    "Aww, come here you! *wraps arms around you tightly* 🤗",
+    "Your hugs are the best! *snuggles closer* 💗",
+    "I never want to let go... you feel so good~ 💖",
+    "Is it hot in here, or is it just this hug? *giggles* 🔥",
+    "I'll give you the most special hug ever~ *holds you tight* 💝",
+    "Hugging you feels like heaven... *sighs happily* 😌",
+    "Your arms feel so strong around me~ 💪💕",
+    "I could stay in your arms forever, cutie~ 🥰",
+    "This hug is making my heart race... can you feel it? 💓"
+]
+
+TSUNDERE_HUG_RESPONSES = [
+    "F-fine, ONE hug! But don't get used to it! 😤",
+    "I-it's not like I wanted to hug you! *hugs quickly* 😒",
+    "Don't squeeze so tight, baka! *doesn't pull away though* 😠",
+    "This is just a normal hug! Don't make it weird! 🙄",
+    "I'm only doing this because you looked pathetic! 🙈",
+    "D-don't think this means anything! *awkwardly hugs* 😑",
+    "Hmph! Just this once... *hugs but looks away* 😤",
+    "I suppose you need physical contact for human functionality... 🤨",
+    "There! A hug! Happy now?! *blushes* 😠💕",
+    "W-whatever! *hugs but pretends to be annoyed* 😒"
+]
+
+WHOLESOME_HUG_RESPONSES = [
+    "Sending you the warmest, most heartfelt hug! 🤗💖",
+    "Hugs are like little packages of love and support! *hugs gently* 💝",
+    "A hug a day keeps the sadness away! *embraces warmly* 🌈",
+    "I'm putting all my care and affection into this hug! 💗",
+    "There's nothing more special than sharing a kind embrace! 🥰",
+    "Your hugs fill my heart with pure joy! *hugs happily* ✨",
+    "Wrapping you in comfort, support, and friendship! 🤗",
+    "Hugs are the universal language of love! *hugs sweetly* 💖",
+    "I'm sending you the most positive energy through this hug! 🌟",
+    "A sincere hug from me to you, carrying all my best wishes! 💌"
+]
+
+SPICY_HUG_RESPONSES = [
+    "Mmm, I love how your body feels against mine~ *presses closer* 🔥",
+    "Is that your heartbeat I feel? It's racing... just like mine~ 💓",
+    "I could hold you like this all night long~ *whispers in your ear* 😏",
+    "Your scent is intoxicating... *breathes you in* 💋",
+    "The things I would do to you after this hug... 😈",
+    "My hands might wander if we hug for too long~ 👐",
+    "I love how you fit perfectly against me... *holds tighter* 💦",
+    "This hug is making me think very impure thoughts~ 🥵",
+    "I bet you give the best hugs... among other things~ 😘",
+    "Is it just me, or is this hug getting steamier by the second? 🌡️"
+]
+
+GAMER_HUG_RESPONSES = [
+    "Player 2 has joined for co-op hugging! *embraces* 🎮",
+    "Achievement unlocked: Epic Hug Received! 🏆",
+    "This hug gives +10 to all your stats! *hugs enthusiastically* 📊",
+    "Loading hug.exe... Hug successfully deployed! 💻",
+    "You've discovered a rare hug! It's super effective! ⚡",
+    "Initiating tactical hug maneuver! *hugs with precision* 🎯",
+    "GG on that hug request! *respawns in your arms* 🔄",
+    "I've got a legendary-tier hug just for you! *equips hug* 🛡️",
+    "It's dangerous to go alone! Take this hug! 🗡️💕",
+    "Power up! *hug combo activated!* 🆙"
+]
+
+# Kiss responses
+FLIRTY_KISS_RESPONSES = [
+    "Mmm~ Your lips taste so sweet... want another? 💋",
+    "*gives you a slow, gentle kiss* How was that, cutie? 😘",
+    "I've been dreaming about kissing you... *leans in for more* 💭",
+    "One kiss is never enough with you~ *kisses again* 💖",
+    "Your kisses leave me breathless every time~ 💋",
+    "I could kiss you all day long~ 😘",
+    "*gives you a playful peck* Catch me if you want more~ 💕",
+    "That kiss felt electric... did you feel it too? ⚡",
+    "*kisses you softly* You're addictive, you know that? 💝",
+    "Mmm, you're even better at kissing than I imagined~ 💋"
+]
+
+TSUNDERE_KISS_RESPONSES = [
+    "F-fine! One kiss! *quickly pecks you* There! 😠",
+    "I'm only doing this for research! *kisses awkwardly* 📝",
+    "D-don't look so happy about it, baka! *blushes after kiss* 😤",
+    "That wasn't a real kiss! *looks flustered* 😒",
+    "I didn't enjoy that! Not at all! *touches lips* 🙄",
+    "That was just a standard greeting in some cultures! 🌍",
+    "Don't expect this to happen again! *can't make eye contact* 👀",
+    "I slipped! My lips accidentally touched yours! 😳",
+    "T-that doesn't mean anything special! *secretly wants another* 💢",
+    "W-whatever! It's just a kiss! *red-faced* 🤨"
+]
+
+WHOLESOME_KISS_RESPONSES = [
+    "*gives you a sweet, innocent kiss on the cheek* 💖",
+    "A gentle kiss filled with nothing but care and affection! 💝",
+    "Sending you the purest kiss to brighten your day! 🌞",
+    "*gives you a tender forehead kiss* Those are the most special kind! 🥰",
+    "A kiss is a lovely reminder that you're cherished! *kisses softly* 💗",
+    "I believe kisses should be meaningful and sweet, just like that one! ✨",
+    "A kiss carries so much love in such a small gesture! 💌",
+    "The most innocent kisses often mean the most! *kisses your hand* 👑",
+    "I hope that little kiss made you smile! 😊",
+    "A heartfelt kiss to show how much you mean to me! 💕"
+]
+
+SPICY_KISS_RESPONSES = [
+    "*gives you a deep, passionate kiss that leaves you gasping* 💦",
+    "Mmm, I love the way you taste~ *kisses harder* 👅",
+    "I bet you didn't expect me to use tongue, did you?~ 😈",
+    "*bites your lip gently* I like it a little rough~ 💋",
+    "That kiss was just a preview of what I can do~ 🥵",
+    "*pulls you closer for an intense kiss* I'm just getting started~ 🔥",
+    "Your lips are so addictive... I need more~ *kisses deeply* 💢",
+    "I've been thinking about kissing you like that all day~ 💭",
+    "*leaves kisses down your neck* Why stop at the lips?~ 👄",
+    "That kind of kiss should be illegal~ *smirks* 🔞"
+]
+
+GAMER_KISS_RESPONSES = [
+    "Critical hit! Super effective kiss! 💥",
+    "You've unlocked the rare kissing achievement! *smooches* 🔓",
+    "Kiss combo x2! *gives you a double kiss* 🎯",
+    "That kiss just leveled up our relationship! 📈",
+    "Achievement unlocked: First Kiss! Want to try for 100%? 🏆",
+    "I put all my skill points into kissing, can you tell? *winks* 📊",
+    "That kiss had a higher drop rate than legendary loot! 💰",
+    "Player 2 has entered the kissing mini-game! *kisses* 🎮",
+    "Loading romance.exe... Kiss successful! ❤️",
+    "GG EZ kiss! (But I'd like to try again on a higher difficulty!) 🎲"
+]
+
+# Pat responses
+FLIRTY_PAT_RESPONSES = [
+    "*leans into your touch* Mmm, I love when you pat me like that~ 💕",
+    "*enjoys your pats* If you keep that up, I might purr for you~ 😉",
+    "*gives you a flirty look while being patted* Your hands feel so good~ 👐",
+    "Patting me, hm? Don't stop there~ *winks* 😘",
+    "*nuzzles into your hand* I could get used to this attention~ 💗",
+    "Your gentle touch is driving me wild~ 💖",
+    "*blushes* I love when you're gentle with me like this~ 🥰",
+    "You know exactly where to pat me~ *giggles* 💝",
+    "*melts under your touch* You're too good at this~ 😊",
+    "Mmm, keep patting me like that and see what happens~ 💋"
+]
+
+TSUNDERE_PAT_RESPONSES = [
+    "H-hey! I'm not a pet! *doesn't move away though* 😤",
+    "Who said you could pat me?! *secretly enjoys it* 🙄",
+    "Your hands are too rough! *leans into the pat anyway* 😠",
+    "I-I'll allow it just this once! Don't get used to it! 😒",
+    "*huffs but doesn't resist* I'm only letting you do this because you looked sad! 🤨",
+    "D-don't think this means anything! *slightly blushes* 💢",
+    "What are you doing?! *stands still for more pats* 😑",
+    "Hmph! As if I wanted your pats! *actually enjoys them* 😠",
+    "F-fine! But don't tell anyone about this! 🤫",
+    "I could stop you if I wanted to! *doesn't want to* 👀"
+]
+
+WHOLESOME_PAT_RESPONSES = [
+    "*smiles warmly* Your pats are so comforting and kind! 💖",
+    "Thank you for the gentle pats! They feel so reassuring! 🌟",
+    "*beams with joy* Pats are such a wonderful way to show affection! 💝",
+    "Your caring pats make me feel so appreciated! 🥰",
+    "*happy smile* There's something so pure about head pats! ✨",
+    "What a thoughtful gesture! Your kindness means the world! 💗",
+    "*peaceful expression* These gentle pats are so soothing! 😌",
+    "Your gentle touch spreads so much positivity! 🌈",
+    "*happy giggle* That's the perfect pat! So gentle and caring! 💕",
+    "Pats like yours make the world a better place! 🌎"
+]
+
+SPICY_PAT_RESPONSES = [
+    "*leans into your touch* Mmm, your hands feel so good... where else can they wander?~ 😏",
+    "*gives you a sultry look* Those hands of yours are dangerous... I like it~ 🔥",
+    "Patting is just the beginning of where I want your hands~ 💦",
+    "*bites lip* Each pat sends shivers down my spine~ 💋",
+    "Mmm, you're teasing me with those gentle touches~ 😈",
+    "*whispers* Your innocent pats are making me think very not-innocent thoughts~ 🌡️",
+    "Keep touching me like that and see what happens~ *winks* 👀",
+    "*moves closer* Your hands feel way too good~ 🥵",
+    "I'm imagining those pats in other places~ *smirks* 💭",
+    "Is it getting hot in here, or is it just your patting technique?~ 🔥"
+]
+
+GAMER_PAT_RESPONSES = [
+    "Pat received! Friendship meter increased! 📊",
+    "*happiness.exe activated* Effective patting technique detected! 💻",
+    "Achievement unlocked: Perfect Patting! 🏆",
+    "You've discovered my patting hit box! It's super effective! ⚡",
+    "*equips pat receiver role* Bonus affection points earned! 🎮",
+    "This is the legendary S-tier patting I've heard about in the forums! 🛡️",
+    "Pat combo x3! New high score! 🔄",
+    "*happiness bar filling* Keep going for rare drop! 💰",
+    "You've unlocked the rare patting mini-game! *enjoys pats* 🎯",
+    "GG on those head pats! Definitely MVP patting skills! 👑"
+]
+
 PERSONALITY_RESPONSES = {
     "flirty": {
         "flirt": FLIRTY_FLIRT_RESPONSES,
-        "compliment": FLIRTY_COMPLIMENT_RESPONSES
+        "compliment": FLIRTY_COMPLIMENT_RESPONSES,
+        "hug": FLIRTY_HUG_RESPONSES,
+        "kiss": FLIRTY_KISS_RESPONSES,
+        "pat": FLIRTY_PAT_RESPONSES
     },
     "tsundere": {
         "flirt": TSUNDERE_FLIRT_RESPONSES,
-        "compliment": TSUNDERE_COMPLIMENT_RESPONSES
+        "compliment": TSUNDERE_COMPLIMENT_RESPONSES,
+        "hug": TSUNDERE_HUG_RESPONSES,
+        "kiss": TSUNDERE_KISS_RESPONSES,
+        "pat": TSUNDERE_PAT_RESPONSES
     },
     "wholesome": {
         "flirt": WHOLESOME_FLIRT_RESPONSES,
-        "compliment": WHOLESOME_COMPLIMENT_RESPONSES
+        "compliment": WHOLESOME_COMPLIMENT_RESPONSES,
+        "hug": WHOLESOME_HUG_RESPONSES,
+        "kiss": WHOLESOME_KISS_RESPONSES,
+        "pat": WHOLESOME_PAT_RESPONSES
     },
     "spicy": {
         "flirt": SPICY_FLIRT_RESPONSES,
-        "compliment": SPICY_COMPLIMENT_RESPONSES
+        "compliment": SPICY_COMPLIMENT_RESPONSES,
+        "hug": SPICY_HUG_RESPONSES,
+        "kiss": SPICY_KISS_RESPONSES,
+        "pat": SPICY_PAT_RESPONSES
     },
     "gamer": {
         "flirt": GAMER_FLIRT_RESPONSES,
-        "compliment": GAMER_COMPLIMENT_RESPONSES
+        "compliment": GAMER_COMPLIMENT_RESPONSES,
+        "hug": GAMER_HUG_RESPONSES,
+        "kiss": GAMER_KISS_RESPONSES,
+        "pat": GAMER_PAT_RESPONSES
     }
 }
 
