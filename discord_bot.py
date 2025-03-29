@@ -60,7 +60,7 @@ async def rotate_status():
         activity = discord.Game(name=random.choice(STATUS_MESSAGES))
         await bot.change_presence(status=discord.Status.online, activity=activity)
 
-async def simulate_typing(ctx, min_time=1, max_time=3):
+async def simulate_typing(ctx, min_time=1.0, max_time=3.0):
     """Simulates typing to make the bot feel more realistic."""
     typing_time = random.uniform(min_time, max_time)
     async with ctx.typing():

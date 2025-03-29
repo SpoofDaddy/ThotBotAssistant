@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200px" height="200px" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <title>Cherry Logo</title>
+    <g id="Cherry-Logo" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <!-- Cherry Stem -->
+        <path d="M100,30 C100,30 120,10 150,20" stroke="#4CAF50" stroke-width="6" stroke-linecap="round"/>
+        
+        <!-- Left Cherry -->
+        <circle id="left-cherry" fill="#FF3366" cx="80" cy="110" r="50"></circle>
+        <circle id="left-cherry-highlight" fill="#FFFFFF" fill-opacity="0.3" cx="65" cy="95" r="15"></circle>
+        
+        <!-- Right Cherry -->
+        <circle id="right-cherry" fill="#FF3366" cx="130" cy="100" r="40"></circle>
+        <circle id="right-cherry-highlight" fill="#FFFFFF" fill-opacity="0.3" cx="118" cy="88" r="12"></circle>
+        
+        <!-- Cherry Leaves -->
+        <path d="M100,28 C100,28 90,15 100,5 C110,-5 125,10 120,20" fill="#4CAF50"></path>
+    </g>
+</svg>

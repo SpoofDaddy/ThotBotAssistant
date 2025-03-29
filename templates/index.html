@@ -4,113 +4,187 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cherry Discord Bot Dashboard</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #ffd6e7;
-            color: #333;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
+        /* Toast notification style */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--cherry-pink);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
         }
-        h1 {
-            color: #ff69b4;
-            text-align: center;
-        }
-        .container {
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .status {
-            text-align: center;
-            font-size: 18px;
-            margin: 20px 0;
-            padding: 10px;
-            border-radius: 5px;
-        }
-        .online {
-            background-color: #d4ffda;
-            color: #00a827;
-        }
-        .offline {
-            background-color: #ffe0e0;
-            color: #c70000;
-        }
-        .commands {
-            margin-top: 20px;
-        }
-        .command {
-            background-color: #f9f9f9;
-            border-left: 3px solid #ff69b4;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-        .command h3 {
-            margin-top: 0;
-            color: #ff69b4;
-        }
-        .leaderboard {
-            margin-top: 20px;
-        }
-        .leaderboard-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px;
-            border-bottom: 1px solid #eee;
-        }
-        .leaderboard-item:nth-child(even) {
-            background-color: #f9f9f9;
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
         }
     </style>
 </head>
 <body>
-    <h1>🍒 Cherry Discord Bot 🍒</h1>
-    <div class="container">
-        <div class="status {{ 'online' if bot_status else 'offline' }}">
-            <p>Bot Status: {{ 'Online' if bot_status else 'Offline' }}</p>
-        </div>
-        
-        <div class="commands">
-            <h2>Available Commands</h2>
-            
-            <div class="command">
-                <h3>!flirt</h3>
-                <p>Cherry will send you a flirty message 💋</p>
-            </div>
-            
-            <div class="command">
-                <h3>!compliment [@user]</h3>
-                <p>Cherry will compliment you or someone you mention 💖</p>
-            </div>
-            
-            <div class="command">
-                <h3>!simp [@user]</h3>
-                <p>Check how much you or someone else has been simping for Cherry 😘</p>
-            </div>
-            
-            <div class="command">
-                <h3>!helpme</h3>
-                <p>Shows all available commands 💌</p>
-            </div>
-        </div>
-        
-        {% if simp_scores %}
-        <div class="leaderboard">
-            <h2>Top Simps Leaderboard</h2>
-            {% for user_id, score in simp_scores %}
-            <div class="leaderboard-item">
-                <span>User {{ user_id }}</span>
-                <span>Score: {{ score }}</span>
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-        
-        <h2>About Cherry</h2>
-        <p>Cherry is a flirty Discord e-girl bot with a sassy personality! She loves complimenting users, tracking simp scores, and bringing fun energy to your server.</p>
-        <p>Bot is currently running in a separate process. Check your Discord server to interact with Cherry!</p>
+    <div class="page-header">
+        <img src="{{ url_for('static', filename='images/cherry-logo.svg') }}" alt="Cherry Logo" width="100">
+        <h1 class="logo">Cherry Discord Bot</h1>
+        <p class="subtitle">Your flirty Discord companion 💘</p>
     </div>
+    
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="card">
+                <div id="bot-status" class="status-indicator {{ 'online' if bot_status else 'offline' }}">
+                    <span class="pulse"></span> Bot Status: {{ 'Online' if bot_status else 'Offline' }}
+                </div>
+                
+                <div class="card-section">
+                    <h2 class="card-title">Personality Mode</h2>
+                    <p id="personality-description">
+                        Flirty, playful, and fun! Cherry loves complimenting users and making everyone feel special.
+                    </p>
+                    
+                    <div class="mood-selector">
+                        <div class="mood-button active" data-mood="default">
+                            Default
+                        </div>
+                        <div class="mood-button tsundere" data-mood="tsundere">
+                            Tsundere
+                        </div>
+                        <div class="mood-button wholesome" data-mood="wholesome">
+                            Wholesome
+                        </div>
+                        <div class="mood-button spicy" data-mood="spicy">
+                            Spicy
+                        </div>
+                        <div class="mood-button yandere" data-mood="yandere">
+                            Yandere
+                        </div>
+                    </div>
+                    <p class="mt-2 mb-0" style="font-size: 0.8em; color: #888;">
+                        Note: Personality switching is coming soon!
+                    </p>
+                </div>
+                
+                <div class="card-section mt-4">
+                    <h2 class="card-title">About Cherry</h2>
+                    <p>Cherry is a flirty Discord e-girl bot with a sassy personality! She loves complimenting users, tracking simp scores, and bringing fun energy to your server.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Commands Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Available Commands</h2>
+                </div>
+                
+                <div class="commands-list">
+                    <div class="command-item">
+                        <h3 class="command-name"><span>!flirt</span></h3>
+                        <p class="command-description">Cherry will send you a flirty message 💋</p>
+                    </div>
+                    
+                    <div class="command-item">
+                        <h3 class="command-name"><span>!compliment [@user]</span></h3>
+                        <p class="command-description">Cherry will compliment you or someone you mention 💖</p>
+                    </div>
+                    
+                    <div class="command-item">
+                        <h3 class="command-name"><span>!simp [@user]</span></h3>
+                        <p class="command-description">Check how much you or someone else has been simping for Cherry 😘</p>
+                    </div>
+                    
+                    <div class="command-item">
+                        <h3 class="command-name"><span>!helpme</span></h3>
+                        <p class="command-description">Shows all available commands 💌</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Simp Leaderboard Card -->
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h2 class="card-title">Top Simps Leaderboard</h2>
+                </div>
+                
+                <div class="leaderboard">
+                    <div class="leaderboard-header">
+                        <div>Rank</div>
+                        <div>User</div>
+                        <div>Score</div>
+                    </div>
+                    
+                    <div id="leaderboard-items" class="leaderboard-items">
+                        {% if simp_scores %}
+                            {% for user_id, score in simp_scores %}
+                            <div class="leaderboard-item">
+                                <div class="rank">#{{ loop.index }}</div>
+                                <div class="user">User {{ user_id }}</div>
+                                <div class="score">{{ score }}</div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="leaderboard-item text-center">No simps yet!</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Coming Soon Features -->
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h2 class="card-title">Coming Soon</h2>
+                </div>
+                
+                <div class="coming-soon">
+                    <div class="coming-soon-item">
+                        <div class="feature-icon">👋</div>
+                        <div class="feature-text">
+                            <h4 class="feature-name">Welcome Messages</h4>
+                            <p class="feature-description">Flirty intros when users join the server</p>
+                        </div>
+                    </div>
+                    
+                    <div class="coming-soon-item">
+                        <div class="feature-icon">💏</div>
+                        <div class="feature-text">
+                            <h4 class="feature-name">Roleplay Commands</h4>
+                            <p class="feature-description">!kiss, !hug, !pat, and more interactions with custom replies</p>
+                        </div>
+                    </div>
+                    
+                    <div class="coming-soon-item">
+                        <div class="feature-icon">🧠</div>
+                        <div class="feature-text">
+                            <h4 class="feature-name">Memory System</h4>
+                            <p class="feature-description">Cherry will remember past interactions with users</p>
+                        </div>
+                    </div>
+                    
+                    <div class="coming-soon-item">
+                        <div class="feature-icon">📝</div>
+                        <div class="feature-text">
+                            <h4 class="feature-name">User Nicknames</h4>
+                            <p class="feature-description">Cherry gives flirty pet names to repeat users</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>Cherry Discord Bot &copy; 2025 | Bringing flirty fun to Discord servers everywhere!</p>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 </body>
 </html>
