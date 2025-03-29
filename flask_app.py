@@ -49,11 +49,6 @@ def index():
     # Get upcoming features for the dashboard (in priority order)
     features = [
         {
-            'name': 'User Nicknames',
-            'description': 'Cherry gives flirty pet names to repeat users',
-            'icon': '📝'
-        },
-        {
             'name': 'Memory Stats',
             'description': 'View memory statistics and user interaction history',
             'icon': '🧠'
@@ -75,12 +70,27 @@ def index():
         }
     ]
     
+    # Get active features
+    active_features = [
+        {
+            'name': 'User Nicknames',
+            'description': 'Cherry gives personality-based nicknames to users',
+            'icon': '📝'
+        },
+        {
+            'name': 'Welcome Messages',
+            'description': 'Personalized greetings for new server members',
+            'icon': '👋'
+        }
+    ]
+    
     return render_template('index.html', 
                           bot_status=bot_status,
                           simp_scores=simp_scores,
                           current_personality=current_personality,
                           personalities=PERSONALITY_TYPES,
-                          coming_soon=features)
+                          coming_soon=features,
+                          active_features=active_features)
 
 @app.route('/api/status')
 def api_status():
@@ -185,6 +195,11 @@ def api_commands():
             'name': '!compliment',
             'description': 'Cherry will compliment you or someone you mention 💖',
             'usage': '!compliment [@user]'
+        },
+        {
+            'name': '!nickname',
+            'description': 'Cherry will give you or someone else a cute nickname 💕',
+            'usage': '!nickname [@user]'
         }
     ]
     
@@ -323,11 +338,6 @@ def api_coming_soon():
     """API endpoint to get all coming soon features"""
     features = [
         {
-            'name': 'User Nicknames',
-            'description': 'Cherry gives flirty pet names to repeat users',
-            'icon': '📝'
-        },
-        {
             'name': 'Memory Stats',
             'description': 'View memory statistics and user interaction history',
             'icon': '🧠'
@@ -359,8 +369,23 @@ def api_coming_soon():
         }
     ]
     
+    # Get list of active features
+    active_features = [
+        {
+            'name': 'User Nicknames',
+            'description': 'Cherry gives personality-based nicknames to users',
+            'icon': '📝'
+        },
+        {
+            'name': 'Welcome Messages',
+            'description': 'Personalized greetings for new server members',
+            'icon': '👋'
+        }
+    ]
+    
     return jsonify({
-        'coming_soon': features
+        'coming_soon': features,
+        'active_features': active_features
     })
 
 if __name__ == '__main__':

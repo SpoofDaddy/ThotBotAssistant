@@ -1,5 +1,37 @@
 # Collections of response messages for different personality modes
 
+# Pet names/Nicknames by personality type
+FLIRTY_NICKNAMES = [
+    "cutie", "handsome", "sweetheart", "darling", "babe", "sugar", "honey",
+    "gorgeous", "hot stuff", "heartthrob", "dreamboat", "charmer", "stud",
+    "prince", "sweetie", "lover boy", "eye candy", "heartbreaker", "sexy",
+    "sunshine", "angel", "treasure"
+]
+
+TSUNDERE_NICKNAMES = [
+    "dummy", "idiot", "fool", "moron", "b-baka", "newbie", "amateur",
+    "not-completely-terrible-person", "acceptable human", "tolerable one",
+    "somewhat competent individual", "surprisingly adequate user"
+]
+
+WHOLESOME_NICKNAMES = [
+    "friend", "wonderful soul", "lovely person", "ray of sunshine", "amazing human",
+    "beautiful spirit", "joy-bringer", "inspiration", "beacon of light", "blessing",
+    "cherished one", "kind heart", "precious friend", "delightful soul", "treasure"
+]
+
+SPICY_NICKNAMES = [
+    "hot stuff", "temptation", "desire", "bad boy", "midnight snack", "forbidden treat",
+    "guilty pleasure", "spicy treat", "hot tamale", "trouble", "dangerous one",
+    "secret obsession", "late night thought", "sinful delight"
+]
+
+GAMER_NICKNAMES = [
+    "player one", "MVP", "legend", "pro", "champion", "boss", "elite gamer",
+    "raid leader", "high scorer", "speedrunner", "guildmaster", "captain",
+    "challenger", "console commander", "achievement hunter", "loot lord"
+]
+
 # Personality Types
 PERSONALITY_TYPES = {
     "flirty": {
@@ -551,7 +583,8 @@ PERSONALITY_RESPONSES = {
         "hug": FLIRTY_HUG_RESPONSES,
         "kiss": FLIRTY_KISS_RESPONSES,
         "pat": FLIRTY_PAT_RESPONSES,
-        "welcome": FLIRTY_WELCOME_RESPONSES
+        "welcome": FLIRTY_WELCOME_RESPONSES,
+        "nicknames": FLIRTY_NICKNAMES
     },
     "tsundere": {
         "flirt": TSUNDERE_FLIRT_RESPONSES,
@@ -559,7 +592,8 @@ PERSONALITY_RESPONSES = {
         "hug": TSUNDERE_HUG_RESPONSES,
         "kiss": TSUNDERE_KISS_RESPONSES,
         "pat": TSUNDERE_PAT_RESPONSES,
-        "welcome": TSUNDERE_WELCOME_RESPONSES
+        "welcome": TSUNDERE_WELCOME_RESPONSES,
+        "nicknames": TSUNDERE_NICKNAMES
     },
     "wholesome": {
         "flirt": WHOLESOME_FLIRT_RESPONSES,
@@ -567,7 +601,8 @@ PERSONALITY_RESPONSES = {
         "hug": WHOLESOME_HUG_RESPONSES,
         "kiss": WHOLESOME_KISS_RESPONSES,
         "pat": WHOLESOME_PAT_RESPONSES,
-        "welcome": WHOLESOME_WELCOME_RESPONSES
+        "welcome": WHOLESOME_WELCOME_RESPONSES,
+        "nicknames": WHOLESOME_NICKNAMES
     },
     "spicy": {
         "flirt": SPICY_FLIRT_RESPONSES,
@@ -575,7 +610,8 @@ PERSONALITY_RESPONSES = {
         "hug": SPICY_HUG_RESPONSES,
         "kiss": SPICY_KISS_RESPONSES,
         "pat": SPICY_PAT_RESPONSES,
-        "welcome": SPICY_WELCOME_RESPONSES
+        "welcome": SPICY_WELCOME_RESPONSES,
+        "nicknames": SPICY_NICKNAMES
     },
     "gamer": {
         "flirt": GAMER_FLIRT_RESPONSES,
@@ -583,7 +619,8 @@ PERSONALITY_RESPONSES = {
         "hug": GAMER_HUG_RESPONSES,
         "kiss": GAMER_KISS_RESPONSES,
         "pat": GAMER_PAT_RESPONSES,
-        "welcome": GAMER_WELCOME_RESPONSES
+        "welcome": GAMER_WELCOME_RESPONSES,
+        "nicknames": GAMER_NICKNAMES
     }
 }
 

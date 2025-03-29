@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 # Import local modules
 from config import PREFIX, COLORS, STATUS_MESSAGES, CURRENT_PERSONALITY, ENABLE_MEMORY, ENABLE_USER_RECOGNITION, ENABLE_WELCOME_MESSAGES
-from responses import PERSONALITY_RESPONSES, PERSONALITY_TYPES
+from responses import PERSONALITY_RESPONSES, PERSONALITY_TYPES, DEFAULT_PERSONALITY
 from simp_tracker import SimpTracker
 from memory_system import memory_system
 
@@ -408,6 +408,75 @@ async def pat(ctx, user: discord.Member = None):
     
     await ctx.send(embed=embed)
 
+@bot.command(name="nickname")
+async def nickname(ctx, user: discord.Member = None):
+    """Cherry gives you or the target user a personality-based nickname."""
+    await simulate_typing(ctx)
+    
+    # If no target is specified, use the command caller
+    if user is None:
+        user = ctx.author
+    
+    # Increment simp score if user is requesting a nickname for themselves
+    if user.id == ctx.author.id:
+        simp_tracker.increment_score(str(ctx.author.id))
+    
+    # Record this interaction in Cherry's memory if enabled
+    if ENABLE_MEMORY:
+        memory_system.record_command(str(ctx.author.id), "nickname", 
+                                   {"target_id": str(user.id) if user else None})
+        
+        # If this is a self-nickname, record it as a self-interaction
+        if user.id == ctx.author.id:
+            memory_system.record_interaction(str(ctx.author.id), "nickname")
+    
+    # Get the personality and appropriate nickname
+    personality = CURRENT_PERSONALITY
+    if personality not in PERSONALITY_RESPONSES:
+        personality = "flirty"  # Default fallback
+    
+    nickname = get_random_nickname(str(user.id))
+    
+    # Store the nickname in memory system if enabled
+    if ENABLE_MEMORY:
+        memory_system.record_preference(str(user.id), "nickname", nickname)
+    
+    # Create response message based on who is getting the nickname
+    if user.id == ctx.author.id:
+        response = f"I think I'll call you **{nickname}** from now on~ 💕"
+    else:
+        response = f"I'm going to call {user.mention} **{nickname}** from now on~ 💕"
+    
+    # Get personality-specific color
+    personality_color = PERSONALITY_TYPES[personality]["color"]
+    
+    # Convert hex color to RGB tuple
+    color_hex = personality_color.lstrip('#')
+    color_rgb = tuple(int(color_hex[i:i+2], 16) for i in (0, 2, 4))
+    
+    embed = discord.Embed(
+        description=response,
+        color=discord.Color.from_rgb(*color_rgb if len(color_rgb) == 3 else COLORS['pink'])
+    )
+    
+    # Add personality indicator to the author name
+    personality_emoji = "🍒"
+    if personality == "tsundere":
+        personality_emoji = "😤"
+    elif personality == "wholesome":
+        personality_emoji = "💖"
+    elif personality == "spicy":
+        personality_emoji = "🔥"
+    elif personality == "gamer":
+        personality_emoji = "🎮"
+    
+    embed.set_author(
+        name=f"Cherry {personality_emoji} [{PERSONALITY_TYPES[personality]['name']}]", 
+        icon_url=bot.user.avatar.url if bot.user.avatar else None
+    )
+    
+    await ctx.send(embed=embed)
+
 @bot.command(name="helpme")
 async def help_command(ctx):
     """Displays all available commands."""
@@ -467,6 +536,7 @@ async def help_command(ctx):
         (f"{PREFIX}hug [@user]", "I'll give you or someone you mention a hug 🤗"),
         (f"{PREFIX}kiss [@user]", "I'll kiss you or someone you mention 😘"),
         (f"{PREFIX}pat [@user]", "I'll pat you or someone you mention 👐"),
+        (f"{PREFIX}nickname [@user]", "I'll give you or someone else a cute nickname 💕"),
         (f"{PREFIX}simp [@user]", "Check how much you or someone else has been simping for me 😘"),
         (f"{PREFIX}helpme", "Shows this help message 💌")
     ]
@@ -480,7 +550,8 @@ async def help_command(ctx):
     
     # Categorize commands
     interaction_commands = [(f"{PREFIX}flirt", "I'll send you a flirty message 💋"),
-                           (f"{PREFIX}compliment [@user]", "I'll compliment you or someone you mention 💖")]
+                           (f"{PREFIX}compliment [@user]", "I'll compliment you or someone you mention 💖"),
+                           (f"{PREFIX}nickname [@user]", "I'll give you or someone else a cute nickname 💕")]
     
     roleplay_commands = [(f"{PREFIX}hug [@user]", "I'll give you or someone you mention a hug 🤗"),
                         (f"{PREFIX}kiss [@user]", "I'll kiss you or someone you mention 😘"),
@@ -614,6 +685,56 @@ async def on_member_join(member):
             logger.info(f"Sent welcome message to {member.name} in {welcome_channel.name}")
     except Exception as e:
         logger.error(f"Error sending welcome message: {e}")
+
+# Helper functions for nickname system
+def get_random_nickname(user_id=None):
+    """
+    Returns a random nickname for the user based on the current personality.
+    
+    Args:
+        user_id (str, optional): The Discord user ID to potentially retrieve a stored nickname
+                                 or generate a consistent nickname for.
+                                 
+    Returns:
+        str: A random nickname from the current personality's nickname list
+    """
+    personality = get_current_personality()
+    
+    # If memory system is enabled and user_id is provided, we could check if the user
+    # already has a stored nickname
+    if ENABLE_MEMORY and user_id and memory_system.has_memory_about(user_id, "nickname"):
+        latest_nickname_memory = memory_system.get_latest_memory(user_id, "preference")
+        if latest_nickname_memory and "content" in latest_nickname_memory:
+            return latest_nickname_memory["content"]
+    
+    # Get nickname list for the current personality
+    nickname_list = PERSONALITY_RESPONSES.get(personality, {}).get("nicknames", [])
+    
+    # Default to flirty nicknames if the current personality doesn't have nicknames
+    if not nickname_list:
+        nickname_list = PERSONALITY_RESPONSES.get("flirty", {}).get("nicknames", ["cutie"])
+    
+    # If user_id is provided, we can use it to seed the random generator
+    # for consistent nicknames per user
+    if user_id:
+        # Create a random generator seeded with the user_id
+        # This ensures the same user gets the same nickname within a personality
+        rng = random.Random(int(user_id) % 10000 + hash(personality) % 10000)
+        return rng.choice(nickname_list)
+    
+    # Otherwise just return a completely random nickname
+    return random.choice(nickname_list)
+
+def get_current_personality():
+    """
+    Returns the current personality of Cherry.
+    This is mainly used to ensure fresh data when checking the personality
+    since environment variables are cached.
+    """
+    # Reload from .env file to ensure we have the latest value
+    load_dotenv()
+    default_personality = "flirty"  # Fallback in case DEFAULT_PERSONALITY is not available
+    return os.environ.get("CURRENT_PERSONALITY", default_personality)
 
 def run_bot():
     """Start the bot"""
