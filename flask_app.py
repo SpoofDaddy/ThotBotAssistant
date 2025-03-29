@@ -54,11 +54,6 @@ def index():
             'icon': '🧠'
         },
         {
-            'name': 'Expanded Roleplay',
-            'description': 'New interactive commands like !cuddle, !dance, and more',
-            'icon': '💋'
-        },
-        {
             'name': 'Server Stats',
             'description': 'Dashboard showing server activity statistics',
             'icon': '📊'
@@ -81,6 +76,11 @@ def index():
             'name': 'Welcome Messages',
             'description': 'Personalized greetings for new server members',
             'icon': '👋'
+        },
+        {
+            'name': 'Expanded Roleplay',
+            'description': 'Interactive commands like !cuddle, !dance, !headpat, and !highfive',
+            'icon': '💋'
         }
     ]
     
@@ -218,6 +218,26 @@ def api_commands():
             'name': '!pat',
             'description': 'Cherry will pat you or someone you mention 👐',
             'usage': '!pat [@user]'
+        },
+        {
+            'name': '!cuddle',
+            'description': 'Cherry will cuddle with you or someone you mention 🫂',
+            'usage': '!cuddle [@user]'
+        },
+        {
+            'name': '!dance',
+            'description': 'Cherry will dance with you or someone you mention 💃',
+            'usage': '!dance [@user]'
+        },
+        {
+            'name': '!headpat',
+            'description': 'Cherry will let you or someone else pat her head 🥰',
+            'usage': '!headpat [@user]'
+        },
+        {
+            'name': '!highfive',
+            'description': 'Cherry will give you or someone you mention a high five 🙌',
+            'usage': '!highfive [@user]'
         }
     ]
     
@@ -343,11 +363,6 @@ def api_coming_soon():
             'icon': '🧠'
         },
         {
-            'name': 'Expanded Roleplay',
-            'description': 'New interactive commands like !cuddle, !dance, and more',
-            'icon': '💋'
-        },
-        {
             'name': 'Server Stats',
             'description': 'Dashboard showing server activity statistics',
             'icon': '📊'
@@ -380,6 +395,11 @@ def api_coming_soon():
             'name': 'Welcome Messages',
             'description': 'Personalized greetings for new server members',
             'icon': '👋'
+        },
+        {
+            'name': 'Expanded Roleplay',
+            'description': 'Interactive commands like !cuddle, !dance, !headpat, and !highfive',
+            'icon': '💋'
         }
     ]
     

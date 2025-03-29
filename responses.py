@@ -575,6 +575,15 @@ GAMER_WELCOME_RESPONSES = [
     "You've found a legendary community! 🔥 Welcome to our gaming party!"
 ]
 
+# Import new roleplay responses
+from roleplay_responses import (
+    FLIRTY_CUDDLE_RESPONSES, FLIRTY_DANCE_RESPONSES, FLIRTY_HEADPAT_RESPONSES, FLIRTY_HIGHFIVE_RESPONSES,
+    TSUNDERE_CUDDLE_RESPONSES, TSUNDERE_DANCE_RESPONSES, TSUNDERE_HEADPAT_RESPONSES, TSUNDERE_HIGHFIVE_RESPONSES,
+    WHOLESOME_CUDDLE_RESPONSES, WHOLESOME_DANCE_RESPONSES, WHOLESOME_HEADPAT_RESPONSES, WHOLESOME_HIGHFIVE_RESPONSES,
+    SPICY_CUDDLE_RESPONSES, SPICY_DANCE_RESPONSES, SPICY_HEADPAT_RESPONSES, SPICY_HIGHFIVE_RESPONSES,
+    GAMER_CUDDLE_RESPONSES, GAMER_DANCE_RESPONSES, GAMER_HEADPAT_RESPONSES, GAMER_HIGHFIVE_RESPONSES
+)
+
 # Responses dictionary for all personality types
 PERSONALITY_RESPONSES = {
     "flirty": {
@@ -584,7 +593,12 @@ PERSONALITY_RESPONSES = {
         "kiss": FLIRTY_KISS_RESPONSES,
         "pat": FLIRTY_PAT_RESPONSES,
         "welcome": FLIRTY_WELCOME_RESPONSES,
-        "nicknames": FLIRTY_NICKNAMES
+        "nicknames": FLIRTY_NICKNAMES,
+        # New roleplay commands
+        "cuddle": FLIRTY_CUDDLE_RESPONSES,
+        "dance": FLIRTY_DANCE_RESPONSES,
+        "headpat": FLIRTY_HEADPAT_RESPONSES,
+        "highfive": FLIRTY_HIGHFIVE_RESPONSES
     },
     "tsundere": {
         "flirt": TSUNDERE_FLIRT_RESPONSES,
@@ -593,7 +607,12 @@ PERSONALITY_RESPONSES = {
         "kiss": TSUNDERE_KISS_RESPONSES,
         "pat": TSUNDERE_PAT_RESPONSES,
         "welcome": TSUNDERE_WELCOME_RESPONSES,
-        "nicknames": TSUNDERE_NICKNAMES
+        "nicknames": TSUNDERE_NICKNAMES,
+        # New roleplay commands
+        "cuddle": TSUNDERE_CUDDLE_RESPONSES,
+        "dance": TSUNDERE_DANCE_RESPONSES,
+        "headpat": TSUNDERE_HEADPAT_RESPONSES,
+        "highfive": TSUNDERE_HIGHFIVE_RESPONSES
     },
     "wholesome": {
         "flirt": WHOLESOME_FLIRT_RESPONSES,
@@ -602,7 +621,12 @@ PERSONALITY_RESPONSES = {
         "kiss": WHOLESOME_KISS_RESPONSES,
         "pat": WHOLESOME_PAT_RESPONSES,
         "welcome": WHOLESOME_WELCOME_RESPONSES,
-        "nicknames": WHOLESOME_NICKNAMES
+        "nicknames": WHOLESOME_NICKNAMES,
+        # New roleplay commands
+        "cuddle": WHOLESOME_CUDDLE_RESPONSES,
+        "dance": WHOLESOME_DANCE_RESPONSES,
+        "headpat": WHOLESOME_HEADPAT_RESPONSES,
+        "highfive": WHOLESOME_HIGHFIVE_RESPONSES
     },
     "spicy": {
         "flirt": SPICY_FLIRT_RESPONSES,
@@ -611,7 +635,12 @@ PERSONALITY_RESPONSES = {
         "kiss": SPICY_KISS_RESPONSES,
         "pat": SPICY_PAT_RESPONSES,
         "welcome": SPICY_WELCOME_RESPONSES,
-        "nicknames": SPICY_NICKNAMES
+        "nicknames": SPICY_NICKNAMES,
+        # New roleplay commands
+        "cuddle": SPICY_CUDDLE_RESPONSES,
+        "dance": SPICY_DANCE_RESPONSES,
+        "headpat": SPICY_HEADPAT_RESPONSES,
+        "highfive": SPICY_HIGHFIVE_RESPONSES
     },
     "gamer": {
         "flirt": GAMER_FLIRT_RESPONSES,
@@ -620,7 +649,12 @@ PERSONALITY_RESPONSES = {
         "kiss": GAMER_KISS_RESPONSES,
         "pat": GAMER_PAT_RESPONSES,
         "welcome": GAMER_WELCOME_RESPONSES,
-        "nicknames": GAMER_NICKNAMES
+        "nicknames": GAMER_NICKNAMES,
+        # New roleplay commands
+        "cuddle": GAMER_CUDDLE_RESPONSES,
+        "dance": GAMER_DANCE_RESPONSES,
+        "headpat": GAMER_HEADPAT_RESPONSES,
+        "highfive": GAMER_HIGHFIVE_RESPONSES
     }
 }
 
