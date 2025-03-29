@@ -1,0 +1,85 @@
+ThotBot3000 — Discord E-Girl Bot (Offline & Free)
+Flirty. Fun. Forever free. Built on Replit, evolving in Visual Studio Pro.
+
+🧠 Project Overview
+ThotBot3000 is a cheeky, AI-simulated Discord e-girl chatbot named Cherry 🍒, built from scratch using Python. She flirts, compliments, tracks simps, and brings spicy energy to your server — without using paid AI like GPT. Everything is handcrafted and hosted 100% free on Replit, with the full plan to migrate and evolve the bot into a more advanced system using Visual Studio Pro.
+
+✅ Core Feature List (Built & Hosted on Replit)
+Feature	Description
+💬 Flirt System	!flirt command gives randomized, cheeky responses from Cherry 🍒
+💘 Compliment Command	!compliment makes her flatter users with nerdy, sweet lines
+⌨️ Typing Simulation	Uses ctx.typing() to mimic real user behavior before replying
+🧠 Persona Engine	Cherry acts with a playful, flirtatious tone and remembers her personality
+💖 Simp Score Tracking	Tracks and stores each user’s flirt count using replit.db
+📈 !simp Score Command	Displays how much each user has flirted with Cherry
+🆘 !helpme Command	Lists all available commands with stylish formatting
+🔐 No API Required	Fully offline-friendly — doesn’t use GPT or paid APIs
+☁️ Replit Hosting	Easily hosted for free with Replit’s environment and optional Always-On
+🔐 .env Secrets	Token is secured with .env variables for safe deployment
+🎀 Optional / Planned Features (To Be Developed in Replit → VS Pro)
+Feature	Description
+🏆 Simp Leaderboard	Displays a ranked list of top flirters
+💅 Mood Engine	Cherry changes behavior randomly (tsundere, wholesome, spicy, etc.)
+💏 Roleplay Commands	!kiss, !hug, !pat, !stepOnMe, etc., with custom replies
+🎭 Dynamic Emojis	Responses adapt with mood-driven emojis
+📝 User Nicknames	Cherry gives flirty pet names to repeat users
+🧠 Memory System	Recalls past interactions or last compliment
+🎀 Cute Welcome Messages	Flirty intros when users join the server
+🎞️ GIF Support	Tenor API (free) for animated flirty responses
+🛰️ Status Rotation	Auto-updating bot status: "DMs Open 💌", "Streaming on OnlyBans 😘", etc.
+🔞 NSFW Mode Toggle	Optional, private-server-only adult-flirty mode
+💻 Development Environment
+Platform	Usage
+🧪 Replit	Live testing, iteration, and hosting of early builds
+🧠 Replit AI	Used for generation and coding support
+👨‍💻 Visual Studio Pro	Final build will be ported here for advanced development, testing, and packaging
+🐍 Python 3.10+	Main programming language
+📦 Libraries	discord.py, replit, python-dotenv
+📁 Project Structure
+bash
+Copy
+Edit
+ThotBot3000/
+│
+├── main.py              # Core bot logic
+├── .env                 # Secure token storage
+├── requirements.txt     # Dependencies for pip
+└── README.md            # This file or documentation
+⚙️ Replit Setup Instructions
+Create a new Python Repl
+
+Install packages:
+
+bash
+Copy
+Edit
+pip install discord replit python-dotenv
+Create .env file:
+
+env
+Copy
+Edit
+DISCORD_TOKEN=your_token_here
+Paste main.py (bot logic provided earlier)
+
+Click Run — Cherry is online 💕
+
+🧭 Porting to Visual Studio Pro (Planned)
+Once development stabilizes on Replit, this project will be:
+
+Fully ported to Visual Studio Pro
+
+Integrated with advanced modules and features
+
+Packaged into an EXE or standalone deployable bot
+
+Possibly upgraded with local LLM or free AI APIs in offline mode
+
+Let me know when you're ready for the next phase — adding the leaderboard, roleplay mode, or full memory system. I can build each as a plug-and-play module! 🍒
+
+
+
+
+
+
+
