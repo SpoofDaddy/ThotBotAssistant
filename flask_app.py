@@ -8,6 +8,7 @@ from simp_tracker import SimpTracker
 from memory_system import memory_system
 from responses import PERSONALITY_TYPES, DEFAULT_PERSONALITY
 from dotenv import load_dotenv
+from config import ENABLE_MEMORY, ENABLE_WELCOME_MESSAGES, ENABLE_USER_RECOGNITION
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, 
@@ -45,17 +46,22 @@ def index():
     # Get top simps
     simp_scores = simp_tracker.get_top_simps(10)
     
-    # Get upcoming features for the dashboard
+    # Get upcoming features for the dashboard (in priority order)
     features = [
-        {
-            'name': 'Welcome Messages',
-            'description': 'Flirty intros when users join the server',
-            'icon': '👋'
-        },
         {
             'name': 'User Nicknames',
             'description': 'Cherry gives flirty pet names to repeat users',
             'icon': '📝'
+        },
+        {
+            'name': 'Memory Stats',
+            'description': 'View memory statistics and user interaction history',
+            'icon': '🧠'
+        },
+        {
+            'name': 'Expanded Roleplay',
+            'description': 'New interactive commands like !cuddle, !dance, and more',
+            'icon': '💋'
         },
         {
             'name': 'Server Stats',
@@ -66,11 +72,6 @@ def index():
             'name': 'Theme Switcher',
             'description': 'Switch between light and dark mode for the dashboard',
             'icon': '🌓'
-        },
-        {
-            'name': 'Memory Stats',
-            'description': 'View memory statistics and user interaction history',
-            'icon': '🧠'
         }
     ]
     
@@ -225,6 +226,75 @@ def api_commands():
         'commands': commands
     })
 
+@app.route('/api/welcome_messages', methods=['GET', 'POST'])
+def api_welcome_messages():
+    """API endpoint to get or toggle welcome messages feature"""
+    if request.method == 'POST':
+        data = request.get_json()
+        if data and 'enabled' in data:
+            try:
+                enabled_flag = data['enabled']
+                # Make sure it's a boolean
+                if not isinstance(enabled_flag, bool):
+                    return jsonify({
+                        'success': False,
+                        'message': "The 'enabled' parameter must be a boolean"
+                    }), 400
+                
+                # Update environment variable to persist across restarts
+                os.environ["ENABLE_WELCOME_MESSAGES"] = str(enabled_flag).lower()
+                
+                # Also update the environment file for persistence across reboots
+                env_path = os.path.join(os.path.dirname(__file__), '.env')
+                
+                # Read existing .env file
+                env_content = ""
+                welcome_flag_found = False
+                
+                if os.path.exists(env_path):
+                    with open(env_path, 'r') as env_file:
+                        lines = env_file.readlines()
+                        for line in lines:
+                            if line.startswith('ENABLE_WELCOME_MESSAGES='):
+                                # Replace the existing line
+                                env_content += f'ENABLE_WELCOME_MESSAGES={str(enabled_flag).lower()}\n'
+                                welcome_flag_found = True
+                            else:
+                                env_content += line
+                
+                # If flag wasn't found, add it
+                if not welcome_flag_found:
+                    env_content += f'\nENABLE_WELCOME_MESSAGES={str(enabled_flag).lower()}\n'
+                
+                # Write back to .env file
+                with open(env_path, 'w') as env_file:
+                    env_file.write(env_content)
+                    
+                logger.info(f"Updated .env file with ENABLE_WELCOME_MESSAGES={str(enabled_flag).lower()}")
+                
+                return jsonify({
+                    'success': True,
+                    'enabled': enabled_flag,
+                    'message': f"Welcome messages {'enabled' if enabled_flag else 'disabled'}"
+                })
+            except Exception as e:
+                logger.error(f"Error updating welcome messages setting: {e}")
+                return jsonify({
+                    'success': False,
+                    'message': f"Error updating welcome messages setting: {str(e)}"
+                }), 500
+        else:
+            return jsonify({
+                'success': False,
+                'message': "Missing 'enabled' parameter"
+            }), 400
+    
+    # GET request - return current setting
+    return jsonify({
+        'success': True,
+        'enabled': ENABLE_WELCOME_MESSAGES
+    })
+
 @app.route('/api/memory')
 def api_memory():
     """API endpoint to get memory system statistics"""
@@ -233,7 +303,7 @@ def api_memory():
         # Memory stats aren't tied to individual users on the dashboard yet
         # Just get overall system stats for now
         memory_stats = {
-            'enabled': os.environ.get("ENABLE_MEMORY", "True").lower() in ["true", "1", "yes"],
+            'enabled': ENABLE_MEMORY,
             'total_memories': 0  # Placeholder - we'll add actual stats in future
         }
         
@@ -253,14 +323,19 @@ def api_coming_soon():
     """API endpoint to get all coming soon features"""
     features = [
         {
-            'name': 'Welcome Messages',
-            'description': 'Flirty intros when users join the server',
-            'icon': '👋'
-        },
-        {
             'name': 'User Nicknames',
             'description': 'Cherry gives flirty pet names to repeat users',
             'icon': '📝'
+        },
+        {
+            'name': 'Memory Stats',
+            'description': 'View memory statistics and user interaction history',
+            'icon': '🧠'
+        },
+        {
+            'name': 'Expanded Roleplay',
+            'description': 'New interactive commands like !cuddle, !dance, and more',
+            'icon': '💋'
         },
         {
             'name': 'Server Stats',
@@ -273,11 +348,6 @@ def api_coming_soon():
             'icon': '🌓'
         },
         {
-            'name': 'Memory Stats',
-            'description': 'View memory statistics and user interaction history',
-            'icon': '🧠'
-        },
-        {
             'name': 'Mobile Improvements',
             'description': 'Better mobile experience for the dashboard',
             'icon': '📱'
@@ -286,11 +356,6 @@ def api_coming_soon():
             'name': 'Event Calendar',
             'description': 'Schedule and manage server events',
             'icon': '📅'
-        },
-        {
-            'name': 'API Documentation',
-            'description': 'Documentation for the bot\'s API endpoints',
-            'icon': '📚'
         }
     ]
     

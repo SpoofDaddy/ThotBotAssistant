@@ -7,7 +7,7 @@ import logging
 from dotenv import load_dotenv
 
 # Import local modules
-from config import PREFIX, COLORS, STATUS_MESSAGES, CURRENT_PERSONALITY, ENABLE_MEMORY, ENABLE_USER_RECOGNITION
+from config import PREFIX, COLORS, STATUS_MESSAGES, CURRENT_PERSONALITY, ENABLE_MEMORY, ENABLE_USER_RECOGNITION, ENABLE_WELCOME_MESSAGES
 from responses import PERSONALITY_RESPONSES, PERSONALITY_TYPES
 from simp_tracker import SimpTracker
 from memory_system import memory_system
@@ -26,9 +26,9 @@ if not TOKEN:
 
 # Setup bot with command prefix
 intents = discord.Intents.default()
-# Disable privileged intents if they're not enabled in the Developer Portal
-# intents.message_content = True
-# intents.members = True
+# Enable privileged intents for welcome messages
+intents.message_content = True
+intents.members = True  # Required for the on_member_join event
 
 bot = commands.Bot(command_prefix=PREFIX, intents=intents)
 simp_tracker = SimpTracker()
@@ -545,6 +545,75 @@ async def help_command(ctx):
     embed.set_footer(text=footer_text)
     
     await ctx.send(embed=embed)
+
+@bot.event
+async def on_member_join(member):
+    """Send a welcome message when a new member joins the server."""
+    # Skip if welcome messages are disabled
+    if not ENABLE_WELCOME_MESSAGES:
+        return
+        
+    try:
+        logger.info(f"New member joined: {member.name}#{member.discriminator} ({member.id})")
+        
+        # Get a welcome channel to send the message in
+        welcome_channel = None
+        
+        # Try to find a channel with "welcome" in the name
+        for channel in member.guild.text_channels:
+            if "welcome" in channel.name.lower():
+                welcome_channel = channel
+                break
+        
+        # If no specific welcome channel, use the first text channel or system channel
+        if not welcome_channel:
+            welcome_channel = member.guild.system_channel or member.guild.text_channels[0]
+        
+        if welcome_channel:
+            # Get response based on current personality
+            personality = CURRENT_PERSONALITY
+            if personality not in PERSONALITY_RESPONSES:
+                personality = "flirty"  # Default fallback
+            
+            welcome_response = random.choice(PERSONALITY_RESPONSES[personality]["welcome"])
+            personality_color = PERSONALITY_TYPES[personality]["color"]
+            
+            # Convert hex color to RGB tuple
+            color_hex = personality_color.lstrip('#')
+            color_rgb = tuple(int(color_hex[i:i+2], 16) for i in (0, 2, 4))
+            
+            embed = discord.Embed(
+                description=f"{member.mention}, {welcome_response}",
+                color=discord.Color.from_rgb(*color_rgb if len(color_rgb) == 3 else COLORS['pink'])
+            )
+            
+            # Add personality indicator to the author name
+            personality_emoji = "🍒"
+            if personality == "tsundere":
+                personality_emoji = "😤"
+            elif personality == "wholesome":
+                personality_emoji = "💖"
+            elif personality == "spicy":
+                personality_emoji = "🔥"
+            elif personality == "gamer":
+                personality_emoji = "🎮"
+            
+            embed.set_author(
+                name=f"Cherry {personality_emoji} [{PERSONALITY_TYPES[personality]['name']}]", 
+                icon_url=bot.user.avatar.url if bot.user.avatar else None
+            )
+            
+            # Add a footer with available commands
+            embed.set_footer(text=f"Type {PREFIX}helpme to see what I can do!")
+            
+            # Record this in memory if enabled
+            if ENABLE_MEMORY:
+                memory_system.record_interaction(str(member.id), "joined_server")
+            
+            await welcome_channel.send(embed=embed)
+            logger.info(f"Sent welcome message to {member.name} in {welcome_channel.name}")
+    except Exception as e:
+        logger.error(f"Error sending welcome message: {e}")
 
 def run_bot():
     """Start the bot"""

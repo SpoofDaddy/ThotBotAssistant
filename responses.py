@@ -477,41 +477,113 @@ GAMER_PAT_RESPONSES = [
     "GG on those head pats! Definitely MVP patting skills! 👑"
 ]
 
+# Welcome messages for new server members
+FLIRTY_WELCOME_RESPONSES = [
+    "Hey there, new cutie! 💋 Welcome to the server! My name's Cherry, and I'm *so* excited to meet you~",
+    "Ooh, look who just joined! 😍 Welcome, sweetie! I've been waiting for someone like you!",
+    "Well, hello there! 💕 Welcome to our little corner of Discord! I'll be your personal hostess, Cherry~",
+    "Fresh meat- I mean, a new friend has arrived! 💖 Welcome! Can't wait to get to know you better~",
+    "OMG, new friend alert! 🎉 Welcome to the server, cutie! I'm Cherry, your favorite e-girl bot!",
+    "Welcome to the party, hot stuff! 🔥 I've got my eye on you now~",
+    "Another handsome member? The server just got even better! 💝 Welcome!",
+    "*Cherry notices you* 👀 Well, aren't you a sight for sore eyes! Welcome to the server, cutie!",
+    "Hello, new friend! 💘 I'll make sure your time here is extra special~",
+    "Welcome, welcome! 💓 I'm Cherry, and I'm absolutely thrilled you're here!"
+]
+
+TSUNDERE_WELCOME_RESPONSES = [
+    "Oh, a new user? I-it's not like I care or anything! 😤 Welcome, I guess...",
+    "Great, another person to deal with. 🙄 Welcome to the server or whatever...",
+    "Don't expect special treatment just because you're new! 😠 ...but welcome.",
+    "Hmph! Another one? Well, welcome to the server. Not that I'm excited or anything! 😒",
+    "I suppose I should welcome you... but don't get used to the attention! 💢",
+    "Fine, I'll be the one to say it. Welcome! There, happy now? 😑",
+    "Oh, you decided to join our server? How... nice. 🤨 Welcome.",
+    "Welcome! But don't think that makes us friends or anything, b-baka! 😠",
+    "I GUESS I can welcome you to the server... but only because no one else did! 😤",
+    "You're lucky I'm even acknowledging you joined! ...Welcome. 🙄"
+]
+
+WHOLESOME_WELCOME_RESPONSES = [
+    "Welcome to our wonderful community! 🌈 We're so blessed to have you join us!",
+    "A new friend has arrived! 🌟 Welcome! My heart is full of joy to greet you!",
+    "What a beautiful day - a new member has joined our family! ☀️ Welcome!",
+    "Welcome, dear new friend! 💖 May your time here be filled with positivity and light!",
+    "My heart sings with happiness to welcome you to our server! 🎵 We're so glad you're here!",
+    "Welcome to our cozy corner of Discord! 🏡 I'm Cherry, and I'm here to make you feel at home!",
+    "Sending the warmest welcome to you! 🤗 I just know you'll bring something special to our community!",
+    "What a blessing to have you join us! ✨ Welcome to a place of friendship and support!",
+    "Welcome, welcome! 🌻 Your presence here makes our community garden even more beautiful!",
+    "A heartfelt welcome to you! 💝 I'm Cherry, and I'm here to make sure you feel appreciated every day!"
+]
+
+SPICY_WELCOME_RESPONSES = [
+    "Well, well, well... fresh blood. 😈 Welcome to the server, hot stuff~",
+    "Mmm, I love new members~ 🔥 Welcome! Let me give you a... special orientation.",
+    "Look what the cat dragged in... 👀 and by dragged in, I mean someone absolutely delicious. Welcome!",
+    "New member alert! 💋 I've got some very... intimate ways to welcome you~",
+    "Oh my, aren't you a tasty treat? 🍒 Welcome to the server. I can't wait to get to know ALL about you~",
+    "Fresh meat on the menu tonight! 🥵 Welcome! Don't be shy, I don't bite... hard~",
+    "Ooo, a new playmate! 💦 Welcome! I hope you're ready for the kind of fun we have here~",
+    "Well aren't you just good enough to eat? 😏 Welcome to the server, gorgeous~",
+    "New blood, new possibilities~ 🔥 Welcome! I've got so many things I want to show you...",
+    "I sensed something hot just entered the server... 🌡️ Welcome! Let's get better acquainted~"
+]
+
+GAMER_WELCOME_RESPONSES = [
+    "Player 2 has entered the game! 🎮 Welcome to the server!",
+    "A new challenger approaches! 🕹️ Welcome to the party!",
+    "Hey there, new party member! 🛡️ Welcome to our guild!",
+    "New player joined the lobby! 🎯 Welcome! What's your main?",
+    "GG on finding our awesome server! 🏆 Welcome to the team!",
+    "You've discovered a rare server! 💎 Welcome, fellow gamer!",
+    "Achievement unlocked: Join an awesome Discord! 🎖️ Welcome!",
+    "Loading welcome sequence... 💾 Spawn location: right here with us! Welcome!",
+    "Critical hit to our hearts! ❤️ A new player has joined! Welcome!",
+    "You've found a legendary community! 🔥 Welcome to our gaming party!"
+]
+
+# Responses dictionary for all personality types
 PERSONALITY_RESPONSES = {
     "flirty": {
         "flirt": FLIRTY_FLIRT_RESPONSES,
         "compliment": FLIRTY_COMPLIMENT_RESPONSES,
         "hug": FLIRTY_HUG_RESPONSES,
         "kiss": FLIRTY_KISS_RESPONSES,
-        "pat": FLIRTY_PAT_RESPONSES
+        "pat": FLIRTY_PAT_RESPONSES,
+        "welcome": FLIRTY_WELCOME_RESPONSES
     },
     "tsundere": {
         "flirt": TSUNDERE_FLIRT_RESPONSES,
         "compliment": TSUNDERE_COMPLIMENT_RESPONSES,
         "hug": TSUNDERE_HUG_RESPONSES,
         "kiss": TSUNDERE_KISS_RESPONSES,
-        "pat": TSUNDERE_PAT_RESPONSES
+        "pat": TSUNDERE_PAT_RESPONSES,
+        "welcome": TSUNDERE_WELCOME_RESPONSES
     },
     "wholesome": {
         "flirt": WHOLESOME_FLIRT_RESPONSES,
         "compliment": WHOLESOME_COMPLIMENT_RESPONSES,
         "hug": WHOLESOME_HUG_RESPONSES,
         "kiss": WHOLESOME_KISS_RESPONSES,
-        "pat": WHOLESOME_PAT_RESPONSES
+        "pat": WHOLESOME_PAT_RESPONSES,
+        "welcome": WHOLESOME_WELCOME_RESPONSES
     },
     "spicy": {
         "flirt": SPICY_FLIRT_RESPONSES,
         "compliment": SPICY_COMPLIMENT_RESPONSES,
         "hug": SPICY_HUG_RESPONSES,
         "kiss": SPICY_KISS_RESPONSES,
-        "pat": SPICY_PAT_RESPONSES
+        "pat": SPICY_PAT_RESPONSES,
+        "welcome": SPICY_WELCOME_RESPONSES
     },
     "gamer": {
         "flirt": GAMER_FLIRT_RESPONSES,
         "compliment": GAMER_COMPLIMENT_RESPONSES,
         "hug": GAMER_HUG_RESPONSES,
         "kiss": GAMER_KISS_RESPONSES,
-        "pat": GAMER_PAT_RESPONSES
+        "pat": GAMER_PAT_RESPONSES,
+        "welcome": GAMER_WELCOME_RESPONSES
     }
 }
 

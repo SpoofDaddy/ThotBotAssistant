@@ -38,6 +38,73 @@
         .toast.warning {
             background-color: var(--warning);
         }
+        
+        /* Toggle Switch */
+        .feature-toggle {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--cherry-pink);
+        }
+        
+        input:focus + .slider {
+            box-shadow: 0 0 1px var(--cherry-pink);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .slider.round {
+            border-radius: 34px;
+        }
+        
+        .slider.round:before {
+            border-radius: 50%;
+        }
+        
+        .coming-soon-item {
+            display: flex;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
@@ -165,10 +232,10 @@
                 </div>
             </div>
             
-            <!-- Coming Soon Features -->
+            <!-- Active Features -->
             <div class="card mt-3">
                 <div class="card-header">
-                    <h2 class="card-title">Coming Soon</h2>
+                    <h2 class="card-title">Active Features</h2>
                 </div>
                 
                 <div class="coming-soon">
@@ -178,6 +245,29 @@
                             <h4 class="feature-name">Welcome Messages</h4>
                             <p class="feature-description">Flirty intros when users join the server</p>
                         </div>
+                        <div class="feature-toggle">
+                            <label class="switch">
+                                <input type="checkbox" id="welcome-messages-toggle" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Coming Soon Features -->
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h2 class="card-title">Coming Soon</h2>
+                </div>
+                
+                <div class="coming-soon">                    
+                    <div class="coming-soon-item">
+                        <div class="feature-icon">📝</div>
+                        <div class="feature-text">
+                            <h4 class="feature-name">User Nicknames</h4>
+                            <p class="feature-description">Cherry gives flirty pet names to repeat users</p>
+                        </div>
                     </div>
                     
                     <div class="coming-soon-item">
@@ -185,14 +275,6 @@
                         <div class="feature-text">
                             <h4 class="feature-name">Memory Stats</h4>
                             <p class="feature-description">View memory statistics and user interaction history</p>
-                        </div>
-                    </div>
-                    
-                    <div class="coming-soon-item">
-                        <div class="feature-icon">📝</div>
-                        <div class="feature-text">
-                            <h4 class="feature-name">User Nicknames</h4>
-                            <p class="feature-description">Cherry gives flirty pet names to repeat users</p>
                         </div>
                     </div>
                 </div>

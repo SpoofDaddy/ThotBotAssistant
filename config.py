@@ -31,6 +31,7 @@ STATUS_MESSAGES = [
 # Current personality of the bot, can be changed via the web interface
 CURRENT_PERSONALITY = os.environ.get("CURRENT_PERSONALITY", DEFAULT_PERSONALITY)
 
-# Enable future features
-ENABLE_MEMORY = os.environ.get("ENABLE_MEMORY", "false").lower() == "true"
+# Enable features
+ENABLE_MEMORY = os.environ.get("ENABLE_MEMORY", "true").lower() == "true"
 ENABLE_USER_RECOGNITION = os.environ.get("ENABLE_USER_RECOGNITION", "false").lower() == "true"
+ENABLE_WELCOME_MESSAGES = os.environ.get("ENABLE_WELCOME_MESSAGES", "true").lower() == "true"

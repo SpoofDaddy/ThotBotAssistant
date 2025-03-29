@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', function() {
     refreshTopSimps();
     setInterval(refreshTopSimps, 60000); // Refresh every minute
     
+    // Initialize welcome messages toggle
+    initWelcomeMessagesToggle();
+    
     // Get current personality
     fetch('/api/personality')
         .then(response => response.json())
@@ -161,6 +164,57 @@ function updatePersonalityDescription(mood, buttonElement) {
     if (description) {
         descriptionElement.textContent = description;
     }
+}
+
+// Welcome Messages Toggle Functionality
+function initWelcomeMessagesToggle() {
+    const welcomeToggle = document.getElementById('welcome-messages-toggle');
+    if (!welcomeToggle) return;
+    
+    // First, get current status from API
+    fetch('/api/welcome_messages')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Set the toggle to match current state
+                welcomeToggle.checked = data.enabled;
+            }
+        })
+        .catch(error => {
+            console.error('Error getting welcome messages status:', error);
+        });
+    
+    // Add event listener for toggle changes
+    welcomeToggle.addEventListener('change', function() {
+        const isEnabled = this.checked;
+        
+        // Update via API
+        fetch('/api/welcome_messages', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                enabled: isEnabled
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showToast(`Welcome messages ${isEnabled ? 'enabled' : 'disabled'}`, 'success');
+            } else {
+                // If failed, revert the toggle and show error
+                welcomeToggle.checked = !isEnabled;
+                showToast(`Error: ${data.message || 'Failed to update welcome messages setting'}`, 'error');
+            }
+        })
+        .catch(error => {
+            // If error, revert the toggle
+            welcomeToggle.checked = !isEnabled;
+            console.error('Error updating welcome messages setting:', error);
+            showToast('Error: Failed to update welcome messages setting', 'error');
+        });
+    });
 }
 
 // Toast Notification

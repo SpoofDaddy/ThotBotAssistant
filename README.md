@@ -12,10 +12,14 @@ ThotBot3000 is a playful Discord chatbot with a flirtatious e-girl personality. 
 |---------|-------------|
 | 💬 Flirt System | `!flirt` command gives randomized, cheeky responses from Cherry 🍒 |
 | 💘 Compliment Command | `!compliment` makes her flatter users with sweet lines |
+| 🤗 Roleplay Commands | `!hug`, `!kiss`, and `!pat` for interactive experiences |
+| 👋 Welcome Messages | Cherry greets new members with personality-specific messages |
+| 🌈 Multiple Personalities | Flirty, tsundere, wholesome, spicy, and gamer personalities |
 | ⌨️ Typing Simulation | Uses `ctx.typing()` to mimic real user behavior before replying |
-| 🧠 Persona Engine | Cherry acts with a playful, flirtatious tone |
-| 💖 Simp Score Tracking | Tracks and stores each user's flirt count using replit.db |
-| 📈 `!simp` Score Command | Displays how much each user has flirted with Cherry |
+| 💖 Simp Score Tracking | Tracks and stores each user's interaction count using replit.db |
+| 📈 `!simp` Score Command | Displays how much each user has interacted with Cherry |
+| 🧠 Memory System | Cherry remembers past interactions and references them in responses |
+| 🌐 Web Dashboard | Control bot features, view stats, and change personality modes |
 | 🆘 `!helpme` Command | Lists all available commands with stylish formatting |
 | 🔐 No API Required | Fully offline-friendly — doesn't use paid APIs |
 | ☁️ Replit Hosting | Easily hosted for free with Replit's environment |
@@ -41,7 +45,14 @@ ThotBot3000 is a playful Discord chatbot with a flirtatious e-girl personality. 
 
 1. Clone or download this repository
 2. Copy the `.env.example` file to `.env` and add your Discord bot token
-3. Install required dependencies:
+3. Configure feature options in the `.env` file (welcome messages, personalities, etc.)
+4. Install required dependencies:
    ```
-   pip install discord.py replit python-dotenv
+   pip install discord.py replit python-dotenv flask flask-sqlalchemy gunicorn
+   ```
+5. Run the Discord bot:
+   ```
+   python main.py
+   ```
+6. Access the web dashboard at http://localhost:5000 (when running locally)
    
