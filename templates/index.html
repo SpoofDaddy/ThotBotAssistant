@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cherry Discord Bot Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffd6e7;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #ff69b4;
+            text-align: center;
+        }
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .status {
+            text-align: center;
+            font-size: 18px;
+            margin: 20px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .online {
+            background-color: #d4ffda;
+            color: #00a827;
+        }
+        .offline {
+            background-color: #ffe0e0;
+            color: #c70000;
+        }
+        .commands {
+            margin-top: 20px;
+        }
+        .command {
+            background-color: #f9f9f9;
+            border-left: 3px solid #ff69b4;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .command h3 {
+            margin-top: 0;
+            color: #ff69b4;
+        }
+        .leaderboard {
+            margin-top: 20px;
+        }
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        .leaderboard-item:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>🍒 Cherry Discord Bot 🍒</h1>
+    <div class="container">
+        <div class="status {{ 'online' if bot_status else 'offline' }}">
+            <p>Bot Status: {{ 'Online' if bot_status else 'Offline' }}</p>
+        </div>
+        
+        <div class="commands">
+            <h2>Available Commands</h2>
+            
+            <div class="command">
+                <h3>!flirt</h3>
+                <p>Cherry will send you a flirty message 💋</p>
+            </div>
+            
+            <div class="command">
+                <h3>!compliment [@user]</h3>
+                <p>Cherry will compliment you or someone you mention 💖</p>
+            </div>
+            
+            <div class="command">
+                <h3>!simp [@user]</h3>
+                <p>Check how much you or someone else has been simping for Cherry 😘</p>
+            </div>
+            
+            <div class="command">
+                <h3>!helpme</h3>
+                <p>Shows all available commands 💌</p>
+            </div>
+        </div>
+        
+        {% if simp_scores %}
+        <div class="leaderboard">
+            <h2>Top Simps Leaderboard</h2>
+            {% for user_id, score in simp_scores %}
+            <div class="leaderboard-item">
+                <span>User {{ user_id }}</span>
+                <span>Score: {{ score }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <h2>About Cherry</h2>
+        <p>Cherry is a flirty Discord e-girl bot with a sassy personality! She loves complimenting users, tracking simp scores, and bringing fun energy to your server.</p>
+        <p>Bot is currently running in a separate process. Check your Discord server to interact with Cherry!</p>
+    </div>
+</body>
+</html>
