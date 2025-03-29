@@ -14,17 +14,29 @@
             right: 20px;
             background-color: var(--cherry-pink);
             color: white;
-            padding: 12px 24px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
             z-index: 1000;
             transform: translateY(100px);
             opacity: 0;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-weight: 500;
+            max-width: 80%;
+            word-wrap: break-word;
         }
         .toast.show {
             transform: translateY(0);
             opacity: 1;
+        }
+        .toast.success {
+            background-color: var(--success);
+        }
+        .toast.error {
+            background-color: var(--danger);
+        }
+        .toast.warning {
+            background-color: var(--warning);
         }
     </style>
 </head>
@@ -46,29 +58,19 @@
                 <div class="card-section">
                     <h2 class="card-title">Personality Mode</h2>
                     <p id="personality-description">
-                        Flirty, playful, and fun! Cherry loves complimenting users and making everyone feel special.
+                        {% set current = personalities[current_personality] %}
+                        {{ current.description }}
                     </p>
                     
                     <div class="mood-selector">
-                        <div class="mood-button active" data-mood="default">
-                            Default
+                        {% for personality_id, personality in personalities.items() %}
+                        <div class="mood-button {{ personality_id }} {% if personality_id == current_personality %}active{% endif %}" 
+                             data-mood="{{ personality_id }}"
+                             data-description="{{ personality.description }}">
+                            {{ personality.name }}
                         </div>
-                        <div class="mood-button tsundere" data-mood="tsundere">
-                            Tsundere
-                        </div>
-                        <div class="mood-button wholesome" data-mood="wholesome">
-                            Wholesome
-                        </div>
-                        <div class="mood-button spicy" data-mood="spicy">
-                            Spicy
-                        </div>
-                        <div class="mood-button yandere" data-mood="yandere">
-                            Yandere
-                        </div>
+                        {% endfor %}
                     </div>
-                    <p class="mt-2 mb-0" style="font-size: 0.8em; color: #888;">
-                        Note: Personality switching is coming soon!
-                    </p>
                 </div>
                 
                 <div class="card-section mt-4">

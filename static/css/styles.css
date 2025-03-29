@@ -272,30 +272,65 @@ a:hover {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  justify-content: center;
 }
 
 .mood-button {
   flex: 1;
-  min-width: 100px;
-  padding: 12px;
+  min-width: 120px;
+  padding: 15px;
   border: 2px solid var(--cherry-gray);
   border-radius: var(--border-radius);
   text-align: center;
   cursor: pointer;
   transition: var(--transition);
   background-color: var(--cherry-white);
+  font-weight: 500;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
 }
 
 .mood-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
 .mood-button.active {
+  font-weight: 600;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.mood-button::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 4px;
+  width: 100%;
+  opacity: 0;
+  transition: var(--transition);
+}
+
+.mood-button:hover::before,
+.mood-button.active::before {
+  opacity: 1;
+}
+
+/* Default style */
+.default {
   border-color: var(--cherry-pink);
+}
+
+.default.active {
   background-color: var(--cherry-pink-light);
 }
 
+.default::before {
+  background-color: var(--cherry-pink);
+}
+
+/* Tsundere style */
 .tsundere {
   border-color: #ff6666;
 }
@@ -304,6 +339,11 @@ a:hover {
   background-color: #ffeeee;
 }
 
+.tsundere::before {
+  background-color: #ff6666;
+}
+
+/* Wholesome style */
 .wholesome {
   border-color: #66bb6a;
 }
@@ -312,6 +352,11 @@ a:hover {
   background-color: #eeffee;
 }
 
+.wholesome::before {
+  background-color: #66bb6a;
+}
+
+/* Spicy style */
 .spicy {
   border-color: #ff9800;
 }
@@ -320,12 +365,21 @@ a:hover {
   background-color: #fff6e6;
 }
 
-.yandere {
-  border-color: #9c27b0;
+.spicy::before {
+  background-color: #ff9800;
 }
 
-.yandere.active {
-  background-color: #f3e5f5;
+/* Gamer style */
+.gamer {
+  border-color: #2196F3;
+}
+
+.gamer.active {
+  background-color: #e3f2fd;
+}
+
+.gamer::before {
+  background-color: #2196F3;
 }
 
 /* Footer */

@@ -7,8 +7,8 @@ import logging
 from dotenv import load_dotenv
 
 # Import local modules
-from config import PREFIX, COLORS, STATUS_MESSAGES
-from responses import FLIRT_RESPONSES, COMPLIMENT_RESPONSES
+from config import PREFIX, COLORS, STATUS_MESSAGES, CURRENT_PERSONALITY, ENABLE_MEMORY, ENABLE_USER_RECOGNITION
+from responses import PERSONALITY_RESPONSES, PERSONALITY_TYPES
 from simp_tracker import SimpTracker
 
 # Configure logging
@@ -68,17 +68,44 @@ async def simulate_typing(ctx, min_time=1.0, max_time=3.0):
 
 @bot.command(name="flirt")
 async def flirt(ctx):
-    """Cherry sends a flirty message to the user."""
+    """Cherry sends a flirty message to the user based on current personality."""
     await simulate_typing(ctx)
     
     # Track the user's flirt interaction
     simp_tracker.increment_score(str(ctx.author.id))
     
+    # Get response based on current personality
+    personality = CURRENT_PERSONALITY
+    if personality not in PERSONALITY_RESPONSES:
+        personality = "flirty"  # Default fallback
+    
+    flirt_response = random.choice(PERSONALITY_RESPONSES[personality]["flirt"])
+    personality_color = PERSONALITY_TYPES[personality]["color"]
+    
+    # Convert hex color to RGB tuple
+    color_hex = personality_color.lstrip('#')
+    color_rgb = tuple(int(color_hex[i:i+2], 16) for i in (0, 2, 4))
+    
     embed = discord.Embed(
-        description=random.choice(FLIRT_RESPONSES),
-        color=discord.Color.from_rgb(*COLORS['pink'])
+        description=flirt_response,
+        color=discord.Color.from_rgb(*color_rgb if len(color_rgb) == 3 else COLORS['pink'])
     )
-    embed.set_author(name="Cherry 🍒", icon_url=bot.user.avatar.url if bot.user.avatar else None)
+    
+    # Add personality indicator to the author name
+    personality_emoji = "🍒"
+    if personality == "tsundere":
+        personality_emoji = "😤"
+    elif personality == "wholesome":
+        personality_emoji = "💖"
+    elif personality == "spicy":
+        personality_emoji = "🔥"
+    elif personality == "gamer":
+        personality_emoji = "🎮"
+    
+    embed.set_author(
+        name=f"Cherry {personality_emoji} [{PERSONALITY_TYPES[personality]['name']}]", 
+        icon_url=bot.user.avatar.url if bot.user.avatar else None
+    )
     embed.set_footer(text=f"Use {PREFIX}simp to see your simp score")
     
     await ctx.send(embed=embed)
@@ -95,13 +122,38 @@ async def compliment(ctx, user: discord.Member = None):
     if target_user.id == ctx.author.id:
         simp_tracker.increment_score(str(ctx.author.id))
     
-    compliment = random.choice(COMPLIMENT_RESPONSES)
+    # Get response based on current personality
+    personality = CURRENT_PERSONALITY
+    if personality not in PERSONALITY_RESPONSES:
+        personality = "flirty"  # Default fallback
+    
+    compliment = random.choice(PERSONALITY_RESPONSES[personality]["compliment"])
+    personality_color = PERSONALITY_TYPES[personality]["color"]
+    
+    # Convert hex color to RGB tuple
+    color_hex = personality_color.lstrip('#')
+    color_rgb = tuple(int(color_hex[i:i+2], 16) for i in (0, 2, 4))
     
     embed = discord.Embed(
         description=f"{target_user.mention}, {compliment}",
-        color=discord.Color.from_rgb(*COLORS['purple'])
+        color=discord.Color.from_rgb(*color_rgb if len(color_rgb) == 3 else COLORS['purple'])
     )
-    embed.set_author(name="Cherry 🍒", icon_url=bot.user.avatar.url if bot.user.avatar else None)
+    
+    # Add personality indicator to the author name
+    personality_emoji = "🍒"
+    if personality == "tsundere":
+        personality_emoji = "😤"
+    elif personality == "wholesome":
+        personality_emoji = "💖"
+    elif personality == "spicy":
+        personality_emoji = "🔥"
+    elif personality == "gamer":
+        personality_emoji = "🎮"
+    
+    embed.set_author(
+        name=f"Cherry {personality_emoji} [{PERSONALITY_TYPES[personality]['name']}]", 
+        icon_url=bot.user.avatar.url if bot.user.avatar else None
+    )
     
     await ctx.send(embed=embed)
 
@@ -150,12 +202,49 @@ async def help_command(ctx):
     """Displays all available commands."""
     await simulate_typing(ctx, min_time=0.5, max_time=1.5)
     
+    # Get color based on current personality
+    personality = CURRENT_PERSONALITY
+    if personality not in PERSONALITY_TYPES:
+        personality = "flirty"  # Default fallback
+    
+    personality_color = PERSONALITY_TYPES[personality]["color"]
+    
+    # Convert hex color to RGB tuple
+    color_hex = personality_color.lstrip('#')
+    color_rgb = tuple(int(color_hex[i:i+2], 16) for i in (0, 2, 4))
+    
+    # Customize description based on personality
+    description = f"Here's how you can interact with me, cutie:"
+    if personality == "tsundere":
+        description = f"Fine, I'll tell you how to use my commands... Not that I care if you use them!"
+    elif personality == "wholesome":
+        description = f"I'm so happy to share these wonderful ways we can interact!"
+    elif personality == "spicy":
+        description = f"Here are the commands you can use with me... Use them wisely, or not so wisely~"
+    elif personality == "gamer":
+        description = f"Ready Player One! Here are the commands in your control scheme:"
+    
     embed = discord.Embed(
         title="Cherry's Commands 💝",
-        description=f"Here's how you can interact with me, cutie:",
-        color=discord.Color.from_rgb(*COLORS['pink'])
+        description=description,
+        color=discord.Color.from_rgb(*color_rgb if len(color_rgb) == 3 else COLORS['pink'])
     )
-    embed.set_author(name="Cherry 🍒", icon_url=bot.user.avatar.url if bot.user.avatar else None)
+    
+    # Add personality indicator to the author name
+    personality_emoji = "🍒"
+    if personality == "tsundere":
+        personality_emoji = "😤"
+    elif personality == "wholesome":
+        personality_emoji = "💖"
+    elif personality == "spicy":
+        personality_emoji = "🔥"
+    elif personality == "gamer":
+        personality_emoji = "🎮"
+    
+    embed.set_author(
+        name=f"Cherry {personality_emoji} [{PERSONALITY_TYPES[personality]['name']}]", 
+        icon_url=bot.user.avatar.url if bot.user.avatar else None
+    )
     
     commands = [
         (f"{PREFIX}flirt", "I'll send you a flirty message 💋"),
@@ -164,10 +253,28 @@ async def help_command(ctx):
         (f"{PREFIX}helpme", "Shows this help message 💌")
     ]
     
+    # Add info about personality
+    embed.add_field(
+        name="Current Personality",
+        value=f"I'm currently in **{PERSONALITY_TYPES[personality]['name']}** mode: {PERSONALITY_TYPES[personality]['description']}",
+        inline=False
+    )
+    
     for cmd, desc in commands:
         embed.add_field(name=cmd, value=desc, inline=False)
     
-    embed.set_footer(text="More commands coming soon... Stay tuned! 💕")
+    # Customize footer based on personality
+    footer_text = "More commands coming soon... Stay tuned! 💕"
+    if personality == "tsundere":
+        footer_text = "Not that I'm adding more commands just for you or anything... baka!"
+    elif personality == "wholesome":
+        footer_text = "More wonderful ways to connect coming soon! You're amazing! 💖"
+    elif personality == "spicy":
+        footer_text = "I've got some special commands planned just for you... 😏"
+    elif personality == "gamer":
+        footer_text = "New command DLC dropping soon! No microtransactions required!"
+    
+    embed.set_footer(text=footer_text)
     
     await ctx.send(embed=embed)
 

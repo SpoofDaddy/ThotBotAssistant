@@ -11,6 +11,26 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize refresh of top simps
     refreshTopSimps();
     setInterval(refreshTopSimps, 60000); // Refresh every minute
+    
+    // Get current personality
+    fetch('/api/personality')
+        .then(response => response.json())
+        .then(data => {
+            if (data.current_personality) {
+                // Find the mood button for this personality and set it as active
+                const buttons = document.querySelectorAll('.mood-button');
+                buttons.forEach(button => {
+                    if (button.getAttribute('data-mood') === data.current_personality) {
+                        button.classList.add('active');
+                    } else {
+                        button.classList.remove('active');
+                    }
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching current personality:', error);
+        });
 });
 
 // Bot Status Check
@@ -68,59 +88,95 @@ function initMoodSelector() {
     
     moodButtons.forEach(button => {
         button.addEventListener('click', function() {
-            // Remove active class from all buttons
-            moodButtons.forEach(btn => btn.classList.remove('active'));
-            
-            // Add active class to clicked button
-            this.classList.add('active');
-            
             const mood = this.getAttribute('data-mood');
+            const moodName = this.textContent.trim();
             
-            // In the future, this would send the selected mood to an API
-            console.log('Selected mood:', mood);
+            // Don't do anything if already active
+            if (this.classList.contains('active')) return;
             
-            // Show toast notification
-            showToast(`Personality set to: ${mood} mode!`);
-            
-            // Update personality description
-            updatePersonalityDescription(mood);
+            // Set the personality via API
+            setPersonality(mood, moodName, this);
         });
     });
 }
 
+// Set personality via API call
+function setPersonality(personality, personalityName, buttonElement) {
+    // Show loading state
+    const originalText = buttonElement.textContent;
+    buttonElement.textContent = "Setting...";
+    buttonElement.style.opacity = "0.7";
+    
+    fetch('/api/personality', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            personality: personality
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Reset button state
+        buttonElement.textContent = originalText;
+        buttonElement.style.opacity = "1";
+        
+        if (data.success) {
+            // Remove active class from all buttons
+            document.querySelectorAll('.mood-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Add active class to this button
+            buttonElement.classList.add('active');
+            
+            // Show success toast notification
+            showToast(`Personality set to: ${personalityName} mode!`, 'success');
+            
+            // Update personality description
+            updatePersonalityDescription(personality, buttonElement);
+        } else {
+            // Show error toast
+            showToast(`Error: ${data.message || 'Failed to change personality'}`, 'error');
+        }
+    })
+    .catch(error => {
+        // Reset button state
+        buttonElement.textContent = originalText;
+        buttonElement.style.opacity = "1";
+        
+        console.error('Error setting personality:', error);
+        showToast('Error: Failed to set personality. Please try again.', 'error');
+    });
+}
+
 // Update personality description based on selected mood
-function updatePersonalityDescription(mood) {
+function updatePersonalityDescription(mood, buttonElement) {
     const descriptionElement = document.getElementById('personality-description');
     if (!descriptionElement) return;
     
-    let description = '';
-    switch(mood) {
-        case 'default':
-            description = 'Flirty, playful, and fun! Cherry loves complimenting users and making everyone feel special.';
-            break;
-        case 'tsundere':
-            description = '"I-It\'s not like I like you or anything, b-baka!" Cherry pretends to be cold but secretly has a sweet side.';
-            break;
-        case 'wholesome':
-            description = 'Sweet as sugar! Cherry is extra supportive, wholesome, and heartwarming with every response.';
-            break;
-        case 'spicy':
-            description = 'Extra flirty and a little bit naughty. Cherry cranks up the sass and spice for more mature servers.';
-            break;
-        case 'yandere':
-            description = 'Obsessive and intense! Cherry is extremely attached to users and might get a little... possessive.';
-            break;
-        default:
-            description = 'Flirty, playful, and fun! Cherry loves complimenting users and making everyone feel special.';
+    // Get description from button's data attribute
+    const description = buttonElement.getAttribute('data-description');
+    if (description) {
+        descriptionElement.textContent = description;
     }
-    
-    descriptionElement.textContent = description;
 }
 
 // Toast Notification
-function showToast(message) {
+function showToast(message, type = 'default') {
     const toast = document.createElement('div');
     toast.className = 'toast';
+    
+    // Add appropriate class based on toast type
+    if (type === 'success') {
+        toast.classList.add('success');
+    } else if (type === 'error') {
+        toast.classList.add('error');
+    } else if (type === 'warning') {
+        toast.classList.add('warning');
+    }
+    
     toast.textContent = message;
     
     document.body.appendChild(toast);
